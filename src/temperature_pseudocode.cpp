@@ -5,7 +5,7 @@
 //every temp will test 3 time for temp from sensor
 //calculate average temp and send to compare with reference
 //similar progress for the other I/O
-
+ 
 
 origin task Temp_measure(){
 	if (count  < 3)
