@@ -8,7 +8,7 @@
  
 
 origin task Temp_measure(){
-	if (count  < 3)
+	if (count  < 3) 
 		int temp = sensor();
 		ChOut (TEMP[count] <- temp),Temp_Avg; //save 3 sets data
 	else
@@ -50,3 +50,5 @@ task Temp_nutron{
 	turn off light or fan;
 	NextTask Temp_measure;
 }
+
+//pending similar pseudocode for water and humidity sensors and the actual implementations in C++
