@@ -1,4 +1,4 @@
-u#ifndef MY_CHAINSIM_H
+#ifndef MY_CHAINSIM_H
 #define MY_CHAINSIM_H
 
 #include <stdlib.h>
@@ -13,7 +13,7 @@ u#ifndef MY_CHAINSIM_H
 // #include <libchain>
 
 //contains matrix and vector classes
-#include "Matrix.h"
+#include "include/libchain/chain.h"
 
 using namespace std;
 
