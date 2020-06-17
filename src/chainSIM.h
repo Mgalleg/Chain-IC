@@ -1,4 +1,4 @@
-u#ifndef MY_CHAINSIM_H
+#ifndef MY_CHAINSIM_H
 #define MY_CHAINSIM_H
 
 #include <stdlib.h>
