@@ -1,7 +1,7 @@
-all: Main.out
+all: temperature.out
 
-Main.out: Main.cpp chainSIM.h chain.c chainSIM.cpp Matrix.h Matrix.cpp
-	g++ Main.cpp chainSIM.cpp Matrix.cpp -lstdc++ -o Main.out
+temperature.out: temperature.cpp chain.c chain.h repeat.h mem.h
+	g++ temperature.cpp chain.c -lstdc++ -o temperature.out
 
 clean:
-	rm -rf Main.out
+	rm -rf temperature.out
