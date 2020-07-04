@@ -28,7 +28,7 @@ void menu() {
 	std::cout << option << std::endl;
 
 }
-
+/*
 //when device needs to harvest energy. the previously attempted task is saved globally(a simulation for being stored in non-volatile memory)
 void on() {
 	next_sensor = false;
@@ -51,7 +51,9 @@ void harvesting() {
 		cap+= (rand()%50);
 	}
 }
+*/
 
+/***********************************************************/
 //tasks include reading temperature value from sensor, computing average, and turning fan on or off (accounting for recent water and humidity values if available)
 void temp(sub_task) {
 	while(~next_sensor && cap >= 20){
@@ -68,6 +70,8 @@ void temp(sub_task) {
 	}
 }
 
+
+/***********************************************************/
 //tasks include reading water level in soil from sensor, computing average, and turning irigation system on or off (accounting for recent temperature and humidity values if available)
 void water(sub_task) {
 	while(~next_sensor && cap >= 20){
@@ -84,6 +88,7 @@ void water(sub_task) {
 	}
 }
 
+/***********************************************************/
 //tasks include reading humidity from sensor, computing average, and turning ventilation system on or off (accounting for recent temperature and water levels if available)
 void humidity(sub_task) {
 	while(~next_sensor && cap >= 20){

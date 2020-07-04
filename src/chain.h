@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 //library for MSP430, temperary not include in this test 6/16
-//#include <libmsp/mem.h>
+#include "mem.h"
 
 #include "repeat.h"
 
