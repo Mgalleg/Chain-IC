@@ -137,8 +137,8 @@ void transition_to(task_t *next_task)
     task_prologue();
 
     __asm__ volatile ( // volatile because output operands unused by C
-        "mov #0x2400, r1\n"
-        "br %[ntask]\n"
+        "mov #0x2400, r1 \n"
+        "br %[ntask] \n"
         :
         : [ntask] "r" (next_task->func)
     );
