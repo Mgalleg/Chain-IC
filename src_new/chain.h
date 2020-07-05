@@ -24,13 +24,9 @@ class channel{
 	void write(float data, int task_index); //ChOut
 
 	private:
-		nv_mem* data;
+		std::vector<float> field;
 	//pending ChSync and MultiOut
 }
 
-class nv_mem{
-	std::vector<float> field;
-
-};
 
 //modules to be written once task and channel are working

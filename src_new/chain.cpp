@@ -16,9 +16,9 @@ channel(task t1, task t2) {
 }
 
 float channel::read(int task_index) {
-	return data->field[index];
+	return field[task_index];
 }
 
 void channel::write(float data, int task_index) {
-	data->field[index] = data;
+	field[task_index] = data;
 }
