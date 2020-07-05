@@ -3,6 +3,7 @@
 #include <vector>
 
 int origin_set;
+int origin;
 
 //linked list of tasks can be made in main()
 class task{
@@ -19,19 +20,17 @@ class channel{
 	task* right;
 
 	channel(task t1, task t2);
-	float channel_read(int task_index); //ChIn
-	void channel_write(float data); //ChOut
+	float read(int task_index); //ChIn
+	void write(float data, int task_index); //ChOut
 
 	private:
-		mem* data
+		nv_mem* data;
 	//pending ChSync and MultiOut
 }
 
-class mem{
-	std::vector<std::vector<int>> field;
+class nv_mem{
+	std::vector<float> field;
 
-	float read(int task_index);
-	void write(float data);
 };
 
 //modules to be written once task and channel are working
