@@ -100,8 +100,18 @@ Channel(Task t1, Task t2) {
  * Read function of Channel class for reading in non-volatile data 
  * from a previous task.
  */
-float Channel::Ch_read(int task_index, Data_nonvol Din) {
-	return field[task_index];
+Data_nonvol Channel::Ch_read(int task_index, Data_nonvol Din) {
+  //do something with task_index...
+  
+  //read nonvolatile memory for most recent update 
+  //NOTE: this is extra work and supposed to represent actually having 
+  //FRAM to read from, otherwise, would be simple return of data.
+  Data *p = new Data;
+  p = Din.getHead();
+  //add transfer of Data LL to Data_nonvol LL later...
+  
+  return Din;
+	// return field[task_index];
 }
 
 /**
@@ -109,5 +119,14 @@ float Channel::Ch_read(int task_index, Data_nonvol Din) {
  * to the next task.
  */
 void Channel::Ch_write(int task_index, Data_nonvol Dout) {
-	field[task_index] = Dout;
+  //do something with task_index 
+  
+  //write data to nonvolatile memory after some task completes
+  //NOTE: this is extra work and supposed to represent actually having 
+  //FRAM to write data to.
+  
+  
+  
+  
+	// field[task_index] = Dout;
 }

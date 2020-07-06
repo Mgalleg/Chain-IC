@@ -29,7 +29,7 @@ struct Channel_ptr{ //
 
 
 /**
- * Data_nonvol class that contains linked list of nonvolatile data. Data_nonvol class 
+ * Data_nonvol class that is a vector linked list of nonvolatile data. Data_nonvol class 
  * is a singly linked list of data that is accessible to Channel class. Contains set()
  * and read() functions to update linked list of Data class.
  */
@@ -39,8 +39,12 @@ class Data_nonvol{
   public:
     Data_nonvol();
     ~Data_nonvol();
-    void set(int index, float value);
-    float read(int index);
+    //function to get head of Data
+    Data *getHead(){
+      return this->head;
+    }
+    void set(int index, float value);   //add value of Data type to list at index 
+    float read(int index);              //read value of Data type from list at index
 };
 
 
@@ -77,7 +81,7 @@ class Channel{
     // Channel* left;     //link to left task - don't need these?
     // Channel* right;    //link to right task - don't need these?
     Channel(Task t1, Task t2);    //create channel between two tasks
-    float Ch_read(int task_index, Data_nonvol Din); //read data in from prev task 
+    Data_nonvol Ch_read(int task_index, Data_nonvol Din); //read data in from prev task 
     void Ch_write(int task_index, Data_nonvol Dout); //write data out to next task
 
 	private:
