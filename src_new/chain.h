@@ -21,6 +21,17 @@ struct Channel_ptr{ //
   Channel_prt* prev;
 }
 
+//class for Volatile Memory storage data
+class Data_volatile{
+  private:
+    Data* head;
+  public:
+    Data_volatile();
+    ~Data_volatile();
+    void set(int index, float value);
+    float read(int index);
+};
+
 //linked list of tasks can be made in main()
 class task{
 	task(func f); //can you pass a function as a parameter??
