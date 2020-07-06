@@ -5,6 +5,22 @@
 int origin_set;
 int origin;
 
+//Struct Data: Data data collect from sensor to channel,the blue color section in my flow chart
+struct Data{ 
+  int index;
+  float value;
+
+  Data* next;
+}
+
+//struct Channel_ptr: Data pointer to point at the current exicution task addresss
+struct Channel_ptr{ //
+  int task_ptr;
+
+  Channel_ptr* next;
+  Channel_prt* prev;
+}
+
 //linked list of tasks can be made in main()
 class task{
 	task(func f); //can you pass a function as a parameter??
