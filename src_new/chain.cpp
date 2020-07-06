@@ -20,15 +20,18 @@ void Data_nonvol::set(int index,float value){
     head = new Data();
     head->value = value;
     head->index = index;
+    head->next = NULL;
   }
   else{ //insert new data at the end of list
     Data *p = head;
     while(p->next != NULL){
-      p->next = p->next->next;
+      p = p->next;
     }
-    p->next = new Data();
-    p->next->value = value;
-    p->next->index = index;
+    Data *t = new Data();
+    p->next = t;
+    t->value = value;
+    t->index = index;
+    t->next = NULL;
   }
 }
 
@@ -41,10 +44,18 @@ float Data_nonvol::read(int index){
   }
   else{
     Data *p = head;
-    while(p->index != index){
-      p->next = p->next->next;
+    if (p->next != NULL){
+      while(p->index != index){
+        p = p ->next;
+      }
+      return p->value;
     }
-    return p->value;
+    else{
+      if (p->index == index){
+        return p->value;
+      }
+      return 0;
+    }
   }
 }
 
