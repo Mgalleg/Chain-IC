@@ -5,55 +5,85 @@
 int origin_set;
 int origin;
 
-//Struct Data: Data data collect from sensor to channel,the blue color section in my flow chart
+
+/**
+ * Data struct: Data data collect from sensor to Channel,the blue color section in flow chart
+ */
 struct Data{ 
   int index;
   float value;
 
   Data* next;
-}
+};
 
-//struct Channel_ptr: Data pointer to point at the current exicution task addresss
+
+/**
+ * Channel_ptr struct: Data pointer to point at the current execution task addresss
+ */
 struct Channel_ptr{ //
   int task_ptr;
 
   Channel_ptr* next;
-  Channel_prt* prev;
-}
+  Channel_ptr* prev;
+};
 
-//class for Volatile Memory storage data
-class Data_volatile{
+
+/**
+ * Data_nonvol class that contains linked list of nonvolatile data. Data_nonvol class 
+ * is a singly linked list of data that is accessible to Channel class. Contains set()
+ * and read() functions to update linked list of Data class.
+ */
+class Data_nonvol{
   private:
     Data* head;
   public:
-    Data_volatile();
-    ~Data_volatile();
+    Data_nonvol();
+    ~Data_nonvol();
     void set(int index, float value);
     float read(int index);
 };
 
-//linked list of tasks can be made in main()
-class task{
-	task(func f); //can you pass a function as a parameter??
-	void set_origin(); //once set changes global variable and no other task can be origin
-	int index;
-	task* next_task; //similar to linked lists
-	channel* left; //
-	channel* right;
+
+/**
+ * Task class that represents linked list of tasks. Task class is a doubly linked list
+ * that includes set_origin functions, which have access to Class Data_nonvol
+ */
+class Task{
+  public:
+    Task();
+    ~Task();
+    Task(func f); //can you pass a function as a parameter??
+    void set_origin(); //once set changes global variable and no other task can be origin
+    int index;
+    Task* head;       //head of task LL
+    Task* prev_task;  //link to prev task in LL 
+    Task* next_task;  //link to next task in LL
+
+    // Channel* left;    //left task of channel  - do we need?
+    // Channel* right;   //right task of channel - do we need?
+    // Channel* self;    //self channel          - do we need?
 };
 
-class channel{
-	task* left;
-	task* right;
 
-	channel(task t1, task t2);
-	float read(int task_index); //ChIn
-	void write(float data, int task_index); //ChOut
+/**
+ * Channel class that represents linked list of channels. Channel class is a doubly linked list
+ * that includes two functions (Ch_read, Ch_write), which have access to Class Data_nonvol
+ */
+class Channel{
+
+  public:
+    Channel();
+    ~Channel();
+    // Channel* left;     //link to left task - don't need these?
+    // Channel* right;    //link to right task - don't need these?
+    Channel(Task t1, Task t2);    //create channel between two tasks
+    float Ch_read(int task_index, Data_nonvol Din); //read data in from prev task 
+    void Ch_write(int task_index, Data_nonvol Dout); //write data out to next task
 
 	private:
 		std::vector<float> field;
 	//pending ChSync and MultiOut
-}
+};
 
 
-//modules to be written once task and channel are working
+//modules to be written once task and Channel are working
