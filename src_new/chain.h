@@ -2,10 +2,6 @@
 #include <map>
 #include <vector>
 
-int origin_set;
-int origin;
-
-
 /**
  * Data struct: Data data collect from sensor to Channel,the blue color section in flow chart
  */
@@ -16,7 +12,6 @@ struct Data{
   Data* next;
 };
 
-
 /**
  * Channel_ptr struct: Data pointer to point at the current execution task addresss
  */
@@ -26,7 +21,6 @@ struct Channel_ptr{ //
   Channel_ptr* next;
   Channel_ptr* prev;
 };
-
 
 /**
  * Data_nonvol class that is a vector linked list of nonvolatile data. Data_nonvol class 
@@ -47,7 +41,6 @@ class Data_nonvol{
     float read(int index);              //read value of Data type from list at index
 };
 
-
 /**
  * Task class that represents linked list of tasks. Task class is a doubly linked list
  * that includes set_origin functions, which have access to Class Data_nonvol
@@ -56,18 +49,16 @@ class Task{
   public:
     Task();
     ~Task();
-    Task(func f); //can you pass a function as a parameter??
     void set_origin(); //once set changes global variable and no other task can be origin
     int index;
     Task* head;       //head of task LL
     Task* prev_task;  //link to prev task in LL 
     Task* next_task;  //link to next task in LL
 
-    // Channel* left;    //left task of channel  - do we need?
-    // Channel* right;   //right task of channel - do we need?
-    // Channel* self;    //self channel          - do we need?
+    Channel* left;    //left task of channel  - do we need?
+    Channel* right;   //right task of channel - do we need?
+    Channel* self;    //self channel          - do we need?
 };
-
 
 /**
  * Channel class that represents linked list of channels. Channel class is a doubly linked list
@@ -80,7 +71,7 @@ class Channel{
     ~Channel();
     // Channel* left;     //link to left task - don't need these?
     // Channel* right;    //link to right task - don't need these?
-    Channel(Task t1, Task t2);    //create channel between two tasks
+    void set_chan(Task t1, Task t2);    //create channel between two tasks
     Data_nonvol Ch_read(int task_index, Data_nonvol Din); //read data in from prev task 
     void Ch_write(int task_index, Data_nonvol Dout); //write data out to next task
 

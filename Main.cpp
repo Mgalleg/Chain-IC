@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
   
   
   //read data to verify written
-  
+  cout << "hi" << endl;
   
 
   //execute task and update volatile memory

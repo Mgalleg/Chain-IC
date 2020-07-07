@@ -8,12 +8,8 @@
 #include <vector>
 #include <cstdlib>
 
-
-//contains chain.h and repeat.h
-// #include <libchain>
-
 //contains matrix and vector classes
-#include "chain.h"
+#include "src_new/chain.h"
 
 using namespace std;
 

@@ -53,7 +53,8 @@ void harvesting() {
 }
 */
 
-/***********************************************************/
+/*
+
 //tasks include reading temperature value from sensor, computing average, and turning fan on or off (accounting for recent water and humidity values if available)
 void temp(sub_task) {
 	while(~next_sensor && cap >= 20){
@@ -71,7 +72,6 @@ void temp(sub_task) {
 }
 
 
-/***********************************************************/
 //tasks include reading water level in soil from sensor, computing average, and turning irigation system on or off (accounting for recent temperature and humidity values if available)
 void water(sub_task) {
 	while(~next_sensor && cap >= 20){
@@ -88,7 +88,6 @@ void water(sub_task) {
 	}
 }
 
-/***********************************************************/
 //tasks include reading humidity from sensor, computing average, and turning ventilation system on or off (accounting for recent temperature and water levels if available)
 void humidity(sub_task) {
 	while(~next_sensor && cap >= 20){
@@ -178,6 +177,8 @@ int next_humidity_task() {
 		return next_task;
 	}
 }
+
+*/
 
 // need to implement functions for each sensor that measure, find avg, and turn on or off external devices. also to change the global variable 'next_sensor'
 

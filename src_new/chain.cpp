@@ -1,5 +1,8 @@
 #include "chain.h"
 
+int origin_set;
+int origin;
+
 /**
  * Constructor of Data_nonvol class. Assigns NULL to head.
  */
@@ -74,9 +77,9 @@ Task::~Task() {}
 /**
  * Task operator of Task class.
  */
-Task::Task(func f) {
-	//perform task
-}
+// Task::Task(func f) {
+	// perform task
+// }
 
 /**
  * Set_origin function of Task class. Sets the origin task (i.e. the task 
@@ -102,7 +105,7 @@ Channel::~Channel() {}
  * Channel operator of Channel class. Creates channel between task t1 and
  * task t2.
  */
-Channel(Task t1, Task t2) {
+void Channel::set_chan(Task t1, Task t2) {
 	left->head = t1->head;
 	right->head = t2->head;
 }
@@ -120,6 +123,8 @@ Data_nonvol Channel::Ch_read(int task_index, Data_nonvol Din) {
   Data *p = new Data;
   p = Din.getHead();
   //add transfer of Data LL to Data_nonvol LL later...
+  
+  p->value = 0;
   
   return Din;
 	// return field[task_index];
