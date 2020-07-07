@@ -4,6 +4,9 @@ using namespace std;
 
 int origin_set;
 int origin;
+vector<vector<float> > Temp_Index_Table; 
+vector<vector<float> > Water_Index_Table; 
+vector<vector<float> > Humid_Index_Table; 
 
 // Constructor of Data_nonvol class. Assigns NULL to head.
 Data_nonvol::Data_nonvol(){
@@ -132,16 +135,15 @@ void Task::operator()(int tsk_idx) {
   }
 }
 
-void Task::sensor() {
-/*
+void Task::Temp_sensor() {
   //add sensor task function here, randomly generate 3 float data between 100 to 50 degree
   float A = 100;
   float B = 50;
   for (int i = 0; i < TEMP_NUM; i++){
     float data = A + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(B-A)));
-    //need to storage data inside the data structure
+    //need to storage data inside the data structure 
+    //Ch_write(0,temp_matrix);
   }
-*/
 #ifdef DEBUG
   cout << "executing sensor function" << endl;
 #endif

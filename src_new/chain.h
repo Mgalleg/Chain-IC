@@ -1,6 +1,10 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <time.h>
+#include <random>
+#include <cstdlib>
+#include <ctime>
 
 #define ROW 5   //total number of tasks + 1 
 #define COL 10  //total number of data members that we will record (per vector)
@@ -90,9 +94,11 @@ class Task{
     // Operator() function of Task class. Determines function (Task) to execute 
     // based off of index provided.
     void operator()(int index);
+    //add a index table for the teperature task list
+    //Nonvol_data_mtx temp_matrix;
 
     //tasks
-    void sensor();
+    void Temp_sensor();
     void temperature();
     void TempIO();
     void water();
