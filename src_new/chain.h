@@ -2,6 +2,15 @@
 #include <map>
 #include <vector>
 
+#define ROW 5   //total number of tasks + 1 
+#define COL 10  //total number of data members that we will record (per vector)
+
+#define TEMP_NUM 3  //how many time to measure temperature
+#define TEMP_HIGH 90  //high temperature range
+#define TEMP_LOW 65 //low temperature range
+
+#define DEBUG   //comment out to not include DEBUG code
+
 // Data struct: Data data collect from sensor to Channel,the blue color section in flow chart
 struct Data{ 
   int index;
@@ -15,6 +24,7 @@ struct Data{
 // and read() functions to update linked list of Data class.
 class Data_nonvol{
   private:
+    int orig_index;   //index of origin stored for 
     Data* head;
   public:
     Data_nonvol();
@@ -32,17 +42,17 @@ class Data_nonvol{
 class Nonvol_data_mtx {
 
   private:
-    int row;
-    int col;
     Data_nonvol *data;
 
   public:
     //Matrix dimensions. Useful for printing.
-    int m, n;
     std::vector<std::vector<int> > matrix;
 
     //Constructor. Allocates nonvolatile data array size.
-    Nonvol_data_mtx(int m, int n);
+    Nonvol_data_mtx(int, int);
+
+    //class method to retrieve object's matrix contents attribute (via A(i,j) format)
+    int& operator()(const int &row_num, const int &col_num);
 
     Data_nonvol *getData(){
       return this->data;
@@ -52,27 +62,14 @@ class Nonvol_data_mtx {
       data = newData;
     }
 
-    void setVals(int m, int n) {
-      row = m;
-      col = n;
-    }
-
-    int getRow(){
-      return row;
-    }
-    
-    int getCol(){
-      return col;
-    }
-
     //Destructor. Deletes the Data_nonvol array.
     ~Nonvol_data_mtx();
 
     //Inserts or updates an element of the Matrix.
-    void set(int row, int column, int value);
+    void set(int row_num, int col_num, int value);
 
     //Retrieves the element of the Matrix.
-    int get(int row, int column);
+    int get(int row_num, int col_num);
 
 };
 
@@ -83,20 +80,32 @@ class Task{
   public:
     Task();
     ~Task();
-    int index;          //index used to determine which task (i.e. sensor, temperature, etc.)
-    int get_origin();   //returns global origin variable, which is stored in nonvolatile memory
-    void set_origin(int index);  //sets global origin variable and stores into nonvolatile memory
+
+    //index used to determine which task (i.e. sensor, temperature, etc.)
+    int index;
+    //returns global origin variable, which is stored in nonvolatile memory
+    int get_origin();
+    //sets global origin variable and stores into nonvolatile memory
+    void set_origin(int index);
+    // Operator() function of Task class. Determines function (Task) to execute 
+    // based off of index provided.
     void operator()(int index);
-    //add each task function here??
+
+    //tasks
     void sensor();
     void temperature();
+    void TempIO();
+    void water();
+    void humidity();
 
+    //read nonvolatile data structure (matrix) and allow access to data of matrix based 
+    //on task_index (i.e. set task_index to index of PREVIOUS task)
+ 		Data_nonvol Ch_read(int task_index, Nonvol_data_mtx Din);
+    
+    //write to nonvolatile data structure (matrix) and allow access to data of 
+    //matrix based on task_index (i.e. set task_index to index of NEXT task)
+    void Ch_write(int task_index, Nonvol_data_mtx Dout); 
 
- 		Data_nonvol Ch_read(int task_index, Data_nonvol Din, Task t1, Task t2); //read data in from prev task 
-    void Ch_write(int task_index, Data_nonvol Dout); //write data out to next task
-
-
-   
 };
 
 /*

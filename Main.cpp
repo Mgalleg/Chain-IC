@@ -39,12 +39,22 @@ int main(int argc, char *argv[]) {
 */
   
   Task t0;
+
+#ifdef DEBUG
+  int cnt=0;
+#endif 
   
-  while (1) {
+  while (cnt < 2) { //change condition to '1' later
     //set orig to task index of next task to be executed
     int orig = t0.get_origin();
+
+#ifdef DEBUG
+    cout << "orig is " << orig << endl;
+#endif
+
     //use Task operator to execute next task based on index ("orig")
     t0(orig);
+    cnt++;
   }
   
   
