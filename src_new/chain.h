@@ -66,10 +66,10 @@ class Nonvol_data_mtx {
     ~Nonvol_data_mtx();
 
     //Inserts or updates an element of the Matrix.
-    void set(int row_num, int col_num, int value);
+    void set(int row_num, int col_num, float value);
 
     //Retrieves the element of the Matrix.
-    int get(int row_num, int col_num);
+    float get(int row_num, int col_num);
 
 };
 

@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
   
 */
   
+/*
   Task t0;
 
 #ifdef DEBUG
@@ -57,10 +58,51 @@ int main(int argc, char *argv[]) {
     cnt++;
   }
   
+*/
+
+
+/*
+  //### COMPLETE ###
+  //MATRIX DATA TEST: test Data_nonvol, Nonvol_data_mtx and Ch_read  
+  Task t1;
+  Nonvol_data_mtx t_mtx(ROW,COL);
+  Data_nonvol t0_data;
+  Data_nonvol t1_data;
   
+  //setup Data_nonvol with data 
+  t0_data.set(0,2);
+  t0_data.set(1,4);
+  t0_data.set(2,6);
+  t1_data.set(0,1);
+  t1_data.set(1,3);
+  t1_data.set(2,5);
   
+  for (int i=0; i < 2; i++) {
+    for (int j=0; j < 3; j++) {
+      if (i == 0) {
+        t_mtx.set(i, j, t0_data.read(j));
+      } else if (i == 1) {
+        t_mtx.set(i, j, t1_data.read(j));
+      }
+    }
+  }
   
+  for (int i=0; i < 2; i++) {
+    for (int j=0; j < 3; j++) {
+      cout << t_mtx.get(i, j) << " ";
+    }
+    cout << endl;
+  }
   
+  //test Ch_read function
+  Data_nonvol t0_nonvol_data;
+  t0_nonvol_data = t1.Ch_read(1,t_mtx);
+  
+  for (int i=0; i < 3; i++) {
+    cout << t0_nonvol_data.read(i) << " ";
+  }
+
+*/
 
 	return 0;
 } 
