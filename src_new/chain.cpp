@@ -153,9 +153,8 @@ void Task::TempIO(){
   }else{
     cout<<"temperature good"<<endl;
   }
+  this->set_origin(0);
 }
-
-
 /*
 
  // Constructor of Channel class.
