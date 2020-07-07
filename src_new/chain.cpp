@@ -3,7 +3,8 @@
 using namespace std;
 
 int origin_set;
-int origin;
+int origin_model;
+int origin_task;
 int mtx_indx_cnt; //column counter used for power reboots 
 
 vector<vector<float> > Data_Index_Table; //data matrix representing nonvolatile memory
@@ -89,8 +90,10 @@ float Nonvol_data_mtx::get(int row_num, int col_num){
 }
 
 // Constructor of Task class.
-Task::Task(int task_type){
-  type = task_type;
+Task::Task(int model_idx, int task_idx){
+  //init model index and task index for Task class
+  model_index = model_idx;
+  task_index = task_idx;
 }
 
 // Destructor of Task class.
@@ -99,43 +102,73 @@ Task::~Task() {}
 //Get_origin function of Task class. Returns the origin task variable "origin"
 //which is stored in nonvolatile memory. This function will read data structure
 //Nonvol_data_mtx (matrix) to find origin variable, which is stored in last row
-int Task::get_origin(){
-  //add code here to read nonvolatile memory based on last row index 
+int Task::get_origin_model(){
+  //add code here to read nonvolatile memory based on last row index to get 
+  //origin_model and origin_task global variables
   
   
-  //just for now, use index = 0 (i.e. origin is first task)
-  index = 0;    //delete later
+  //just for now, use origin_model = 0
+  int origin_model_idx = 0;    //delete later
+
+
+  origin_model = origin_model_idx;
+  
+  //return tuple origin_model and origin_task global variables that were stored in 
+  //nonvolatile memory
+  return origin_model;
+}
+
+int Task::get_origin_task(){
+  //add code here to read nonvolatile memory based on last row index to get 
+  //origin_model and origin_task global variables
   
   
-  //return origin value that was stored in nonvolatile memory
-  return origin = index;
+  //just for now, use origin_task = 0
+  int origin_task_idx = 0;    //delete later
+
+
+  origin_task = origin_task_idx;
+  
+  //return tuple origin_model and origin_task global variables that were stored in 
+  //nonvolatile memory
+  return origin_task;
 }
 
 //Set_origin function of Task class. Sets the origin variable (i.e. the index of task 
 //that will be the first task executed upon resuming after power failure).
-void Task::set_origin(int tsk_idx){
-  origin = tsk_idx;
+void Task::set_origin(int model_idx, int task_idx){
   
   //Since origin variable is volatile (i.e. global), store origin variable in nonvolatile 
   //memory at last index of matrix. This stored origin variable will later be accessed 
   //via get_origin() function.
-  
+
+
+  //for now, just set like so...delete later
+  origin_model = model_idx;
+  origin_task = task_idx;  
   
 }
 
 // Operator() function of Task class. Determines function (Task) to execute 
 // based on task index provided.
-void Task::operator()(int tsk_idx) {
-  if (tsk_idx == 0) {
-    //execute sensor() task
-    this->sensor();
-  } else if (tsk_idx ==1) {
-    //execute temperature() task
-    this->temperature();
+void Task::operator()(int model_idx, int task_idx) {
+
+  //choose task type for model temperature 
+  if (task_idx == 0) {
+      //execute sensor_RAW() task for model type
+      this->sensor_RAW(model_idx);
+  } else if (task_idx == 1) {
+    //execute sensor_AVG() task for model type
+    this->sensor_AVG(model_idx);
+  } else if (task_idx == 2) {
+    //execute sensor_IO() task for model type
+    this->sensor_IO(model_idx);
   }
 }
 
-void Task::sensor_RAW(int type) {
+void Task::sensor_RAW(int model_type) {
+
+/*
   //add sensor task function here, randomly generate 3 float data between 100 to 50 degree
   float A = 100;
   float B = 50;
@@ -145,25 +178,30 @@ void Task::sensor_RAW(int type) {
     //Ch_write(0,temp_matrix);
     
   }
+
+*/
 #ifdef DEBUG
-  cout << "executing sensor function" << endl;
+  cout << "executing Sensor RAW function" << endl;
 #endif
 
-  if (type == 0) {
-    //temperature stuff here for sensor() function
+  if (model_type == 0) {
+    //temperature stuff here for sensor_RAW() function
 
-
-
-  } else if (type == 1) {
-    //water stuff here for sensor() function
+    this->set_origin(model_type, 1);
+  } else if (model_type == 1) {
+    //water stuff here for sensor_RAW() function
     
+    this->set_origin(model_type, 1);
+  } else if (model_type == 2) {
+    //humidity stuff here for sensor_RAW() function
     
+
+    this->set_origin(model_type, 1);
   }
 
-  this->set_origin(1);
 }
 
-void Task::sensor_AVG() {
+void Task::sensor_AVG(int model_type) {
 /*
   //add sensor task function here
   for (int i = 0; i < TEMP_NUM; i++){
@@ -173,13 +211,25 @@ void Task::sensor_AVG() {
   }
 */
 #ifdef DEBUG
-  cout << "executing temperature function" << endl;
+  cout << "executing Sensor AVG function" << endl;
 #endif
 
-  this->set_origin(2);
+  if (model_type == 0) {
+    //temperature stuff here for sensor_AVG() function
+
+    this->set_origin(model_type, 2);
+  } else if (model_type == 1) {
+    //water stuff here for sensor_AVG() function
+    
+    this->set_origin(model_type, 2);
+  } else if (model_type == 2) {
+    //humidity stuff here for sensor_AVG() function
+    
+    this->set_origin(model_type, 2);
+  }
 }
 
-void Task::sensor_IO(){
+void Task::sensor_IO(int model_type){
 /*
   //read the average data inside the list
   if (float avg > TEMP_HIGH){
@@ -191,15 +241,28 @@ void Task::sensor_IO(){
   }
 */
 #ifdef DEBUG
-  cout << "executing temperature IO function" << endl;
+  cout << "executing Sensor IO function" << endl;
 #endif
 
-  this->set_origin(0);
+  if (model_type == 0) {
+    //temperature stuff here for sensor_IO() function
+
+    this->set_origin(model_type, 0);
+  } else if (model_type == 1) {
+    //water stuff here for sensor_IO() function
+    
+    this->set_origin(model_type, 0);
+  } else if (model_type == 2) {
+    //humidity stuff here for sensor_IO() function
+    
+
+    this->set_origin(model_type, 0);
+  }
 }
 
 //read nonvolatile data structure (matrix) and allow access to data of matrix based 
 //on task_index (i.e. set task_index to index of PREVIOUS task)
-Data_nonvol Task::Ch_read(int task_index, Nonvol_data_mtx Din) {
+Data_nonvol Task::Ch_read(int task_index, int data_index, Nonvol_data_mtx Din) {
 
   //read nonvolatile memory for most recent update 
   //NOTE: this is extra work and supposed to represent actually having 
@@ -219,33 +282,21 @@ Data_nonvol Task::Ch_read(int task_index, Nonvol_data_mtx Din) {
 
 //write to nonvolatile data structure (matrix) and allow access to data of 
 //matrix based on task_index (i.e. set task_index to index of NEXT task)
-void Task::Ch_write(int task_index, Nonvol_data_mtx Dout) {
+void Task::Ch_write(int task_index, int data_index, Nonvol_data_mtx Dout) {
   //do something with task_index 
   
   //write data to nonvolatile memory after some task completes
   //NOTE: this is extra work and supposed to represent actually having 
   //FRAM to write data to.
+
+  // Data_nonvol task_data;
+
+  // for (int i=0; i <= task_index; i++) {
+    // if (i == task_index) {
+      // for (int j=0; j < COL; j++) {
+        // task_data.set(j, Din.matrix[i][j]);
+      // }
+    // }
+  // }
   
-  
-  
-  
-	// field[task_index] = Dout;
 }
-
-
-/*
-
- // Constructor of Channel class.
-Channel::Channel() {}
-
- // Destructor of Channel class.
-Channel::~Channel() {}
-
- // Channel operator of Channel class. Creates channel between task t1 and
- // task t2.
-void Channel::set_chan(Task t1, Task t2) {
-	left->head = t1->head;
-	right->head = t2->head;
-}
-
-*/

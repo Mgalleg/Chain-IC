@@ -1,13 +1,13 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <time.h>
-#include <random>
-#include <cstdlib>
-#include <ctime>
+// #include <time.h>
+// #include <random>
+// #include <cstdlib>
+// #include <ctime>
 
-#define ROW 5   //total number of tasks + 1 
-#define COL 10  //total number of data members that we will record (per vector)
+#define ROW 10   //total number of tasks + 1; NOTE: last row is for origin storage
+#define COL 100  //total number of data members that we will record (per vector)
 
 #define TEMP_NUM 3  //how many time to measure temperature
 #define TEMP_HIGH 90  //high temperature range
@@ -82,62 +82,36 @@ class Nonvol_data_mtx {
 // that includes set_origin functions, which have access to Class Data_nonvol
 class Task{
   public:
-    Task(int task_type);
+    Task(int model_idx, int task_idx);
     ~Task();
 
-    //index used to determine which task (i.e. sensor, temperature, etc.)
-    int index;
-    //type of model: i.e. type=0 (temperature), type=1 (water), type=2 (humidity)
-    int type;
-    //returns global origin variable, which is stored in nonvolatile memory
-    int get_origin();
-    //sets global origin variable and stores into nonvolatile memory
-    void set_origin(int index);
+    //model_index used to determine model type: index=0 (temperature), index=1 (water), 
+    //index=2 (humidity)
+    int model_index;
+    //task_index used for task type: index=0 (sensor raw), index=1 (sensor avg), 
+    //index=2 (sensor io)
+    int task_index;
+    //returns variables origin_model (stored in nonvolatile memory)
+    int get_origin_model();
+    //returns variables origin_task (stored in nonvolatile memory)
+    int get_origin_task();
+    //sets variables origin_model and origin_task and stores into nonvolatile memory
+    void set_origin(int model_idx, int task_idx);
     // Operator() function of Task class. Determines function (Task) to execute 
-    // based off of index provided.
-    void operator()(int index);
-    //add a index table for the teperature task list
-    //Nonvol_data_mtx temp_matrix;
+    // based off of task_idx provided.
+    void operator()(int model_idx, int task_idx);
 
     //tasks
-    void sensor_RAW(int type);
-    void sensor_IO(int type);
-    void sensor_AVG(int type);
-    // void Temp_sensor();
-    // void temperature();
-    // void TempIO();
-    // void water();
-    // void humidity();
+    void sensor_RAW(int model_type);
+    void sensor_IO(int model_type);
+    void sensor_AVG(int model_type);
 
     //read nonvolatile data structure (matrix) and allow access to data of matrix based 
     //on task_index (i.e. set task_index to index of PREVIOUS task)
- 		Data_nonvol Ch_read(int task_index, Nonvol_data_mtx Din);
+ 		Data_nonvol Ch_read(int task_index, int data_index, Nonvol_data_mtx Din);
     
     //write to nonvolatile data structure (matrix) and allow access to data of 
     //matrix based on task_index (i.e. set task_index to index of NEXT task)
-    void Ch_write(int task_index, Nonvol_data_mtx Dout); 
+    void Ch_write(int task_index, int data_index, Nonvol_data_mtx Dout); 
 
 };
-
-/*
- //Channel class that represents linked list of channels. Channel class is a doubly linked list
- //that includes two functions (Ch_read, Ch_write), which have access to Class Data_nonvol
- 
-class Channel{
-
-  public:
-    Channel();
-    ~Channel();
-    // Channel* left;     //link to left task - don't need these?
-    // Channel* right;    //link to right task - don't need these?
-
-
-	private:
-		std::vector<float> field;
-	//pending ChSync and MultiOut
-};
-
-
-//modules to be written once task and Channel are working
-
-*/
