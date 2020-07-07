@@ -4,6 +4,8 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
+/*
+
 	// on();
 
   //test channel and task structures here
@@ -33,6 +35,20 @@ int main(int argc, char *argv[]) {
   
   //call Ch_read 
   d2 = sensor2temp.Ch_read(1, d1);
+  
+*/
+  
+  Task t0;
+  
+  while (1) {
+    //set orig to task index of next task to be executed
+    int orig = t0.get_origin();
+    //use Task operator to execute next task based on index ("orig")
+    t0(orig);
+  }
+  
+  
+  
   
   
 

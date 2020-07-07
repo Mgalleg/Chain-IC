@@ -1,23 +1,19 @@
 #include "chain.h"
 
+using namespace std;
+
 int origin_set;
 int origin;
 
-/**
- * Constructor of Data_nonvol class. Assigns NULL to head.
- */
+// Constructor of Data_nonvol class. Assigns NULL to head.
 Data_nonvol::Data_nonvol(){
   head = NULL;
 }
 
-/**
- * Destructor of Data_nonvol class. 
- */
+// Destructor of Data_nonvol class. 
 Data_nonvol::~Data_nonvol(){}
 
-/**
- * Set function of Data_nonvol class for writing data into LL. 
- */
+// Set function of Data_nonvol class for writing data into LL. 
 void Data_nonvol::set(int index,float value){
   if (head == NULL){ //start first data on list
     head = new Data();
@@ -38,9 +34,7 @@ void Data_nonvol::set(int index,float value){
   }
 }
 
-/**
- * Read function of Data_nonvol class for reading data from LL. 
- */
+// Read function of Data_nonvol class for reading data from LL. 
 float Data_nonvol::read(int index){
   if (head == NULL){
     return 0;
@@ -62,58 +56,102 @@ float Data_nonvol::read(int index){
   }
 }
 
-/**
- * Constructor of Task class.
- */
+// Constructor. Allocates nonvolatile data array size.
+Nonvol_data_mtx::Nonvol_data_mtx(int m, int n){
+
+  //need to dynamically allocate size of matrix based on size of nonvolatile data
+	matrix.resize(m, vector<int>(n));
+}
+
+//Destructor. Deletes the vector array.
+Nonvol_data_mtx::~Nonvol_data_mtx(){
+  this->matrix.clear();
+  vector<vector<int> >().swap(this->matrix);
+}
+
+//Inserts or updates an element of the Matrix.
+void Nonvol_data_mtx::set(int row, int column, int value){
+
+  matrix[row][column] = value;
+}
+
+//Retrieves the element of the Matrix.
+int Nonvol_data_mtx::get(int row, int column){
+  
+  return matrix[row][column];
+}
+
+// Constructor of Task class.
 Task::Task(){
   
 }
 
-/**
- * Destructor of Task class.
- */
+// Destructor of Task class.
 Task::~Task() {}
 
-/**
- * Task operator of Task class.
- */
-// Task::Task(func f) {
-	// perform task
-// }
+// Get_origin function of Task class. Gets the origin task variable "origin"
+// which is stored in nonvolatile memory. This function will read data structure
+// Data_nonvol to find 
+int Task::get_origin(){
+  //
+  
+  return origin = index;
+}
 
-/**
- * Set_origin function of Task class. Sets the origin task (i.e. the task 
- * that is started once program resumes after power failur)
- */
-void Task::set_origin(){
+// Set_origin function of Task class. Sets the origin task (i.e. the task 
+// that is started once program resumes after power failur)
+void Task::set_origin(int index){
 	if(origin_set != 1) {
-		origin = index;
+		origin = this->index;
 	}
 }
 
-/**
- * Constructor of Channel class.
- */
+// Operator() function of Task class. Determines function (Task) to execute 
+// based off of index provided.
+void Task::operator()(int index) {
+  if (index == 0) {
+    //execute sensor() task
+    this->sensor();
+  } else if (index ==1) {
+    //execute temperature() task
+    this->temperature();
+  }
+}
+
+void Task::sensor() {
+  //add sensor task function here
+
+
+  
+  this->set_origin(1);
+}
+
+void Task::temperature() {
+  //add sensor task function here
+
+
+  
+  this->set_origin(2);
+}
+
+
+/*
+
+ // Constructor of Channel class.
 Channel::Channel() {}
 
-/**
- * Destructor of Channel class.
- */
+ // Destructor of Channel class.
 Channel::~Channel() {}
 
-/**
- * Channel operator of Channel class. Creates channel between task t1 and
- * task t2.
- */
+ // Channel operator of Channel class. Creates channel between task t1 and
+ // task t2.
 void Channel::set_chan(Task t1, Task t2) {
 	left->head = t1->head;
 	right->head = t2->head;
 }
 
-/**
- * Read function of Channel class for reading in non-volatile data 
- * from a previous task.
- */
+ // Read function of Channel class for reading in non-volatile data 
+ // from a previous task.
 Data_nonvol Channel::Ch_read(int task_index, Data_nonvol Din) {
   //do something with task_index...
   
@@ -130,10 +168,8 @@ Data_nonvol Channel::Ch_read(int task_index, Data_nonvol Din) {
 	// return field[task_index];
 }
 
-/**
- * Write function of Channel class for transferring non-volatile data 
- * to the next task.
- */
+ // Write function of Channel class for transferring non-volatile data 
+ // to the next task.
 void Channel::Ch_write(int task_index, Data_nonvol Dout) {
   //do something with task_index 
   
@@ -146,3 +182,5 @@ void Channel::Ch_write(int task_index, Data_nonvol Dout) {
   
 	// field[task_index] = Dout;
 }
+
+*/
