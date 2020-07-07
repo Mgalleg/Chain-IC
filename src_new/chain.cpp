@@ -2,6 +2,10 @@
 
 using namespace std;
 
+#define TEMP_NUM 3  //how many time to measure temperature
+#define TEMP_HIGH 90  //high temperature range
+#define TEMP_LOW 65 //low temperature range
+
 int origin_set;
 int origin;
 
@@ -119,19 +123,36 @@ void Task::operator()(int index) {
 }
 
 void Task::sensor() {
-  //add sensor task function here
-
-
-  
+  //add sensor task function here, randomly generate 3 float data between 100 to 50 degree
+  float A = 100;
+  float B = 50;
+  for (int i = 0; i < TEMP_NUM; i++){
+    float data = A + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(B-A)));
+    //need to storage data inside the data structure
+  }
   this->set_origin(1);
 }
 
 void Task::temperature() {
   //add sensor task function here
+  for (int i = 0; i < TEMP_NUM; i++){
+    //read from data structure
+    float avg = (A + B + C)/TEMP_NUM;
+    //write Avg inside data structure;
+  }
 
-
-  
   this->set_origin(2);
+}
+
+void Task::TempIO(){
+  //read the average data inside the list
+  if (float avg > TEMP_HIGH){
+    cout<<"temperature too high, turn fan on"<<endl;
+  }else if(float avg < TEMP_LOW){
+    cout<<"temperature too low, turn heater on"<<endl;
+  }else{
+    cout<<"temperature good"<<endl;
+  }
 }
 
 
