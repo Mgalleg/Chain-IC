@@ -4,6 +4,13 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
+
+  Task temperature(0);
+  Task water(1);
+  Task humidity(2);
+  
+
+
 /*
 
 	// on();

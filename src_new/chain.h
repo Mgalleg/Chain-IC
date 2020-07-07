@@ -82,11 +82,13 @@ class Nonvol_data_mtx {
 // that includes set_origin functions, which have access to Class Data_nonvol
 class Task{
   public:
-    Task();
+    Task(int task_type);
     ~Task();
 
     //index used to determine which task (i.e. sensor, temperature, etc.)
     int index;
+    //type of model: i.e. type=0 (temperature), type=1 (water), type=2 (humidity)
+    int type;
     //returns global origin variable, which is stored in nonvolatile memory
     int get_origin();
     //sets global origin variable and stores into nonvolatile memory
@@ -98,11 +100,14 @@ class Task{
     //Nonvol_data_mtx temp_matrix;
 
     //tasks
-    void Temp_sensor();
-    void temperature();
-    void TempIO();
-    void water();
-    void humidity();
+    void sensor_RAW(int type);
+    void sensor_IO(int type);
+    void sensor_AVG(int type);
+    // void Temp_sensor();
+    // void temperature();
+    // void TempIO();
+    // void water();
+    // void humidity();
 
     //read nonvolatile data structure (matrix) and allow access to data of matrix based 
     //on task_index (i.e. set task_index to index of PREVIOUS task)

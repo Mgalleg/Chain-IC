@@ -4,9 +4,9 @@ using namespace std;
 
 int origin_set;
 int origin;
-vector<vector<float> > Temp_Index_Table; 
-vector<vector<float> > Water_Index_Table; 
-vector<vector<float> > Humid_Index_Table; 
+int mtx_indx_cnt; //column counter used for power reboots 
+
+vector<vector<float> > Data_Index_Table; //data matrix representing nonvolatile memory
 
 // Constructor of Data_nonvol class. Assigns NULL to head.
 Data_nonvol::Data_nonvol(){
@@ -89,8 +89,8 @@ float Nonvol_data_mtx::get(int row_num, int col_num){
 }
 
 // Constructor of Task class.
-Task::Task(){
-  
+Task::Task(int task_type){
+  type = task_type;
 }
 
 // Destructor of Task class.
@@ -135,7 +135,7 @@ void Task::operator()(int tsk_idx) {
   }
 }
 
-void Task::Temp_sensor() {
+void Task::sensor_RAW(int type) {
   //add sensor task function here, randomly generate 3 float data between 100 to 50 degree
   float A = 100;
   float B = 50;
@@ -143,15 +143,27 @@ void Task::Temp_sensor() {
     float data = A + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(B-A)));
     //need to storage data inside the data structure 
     //Ch_write(0,temp_matrix);
+    
   }
 #ifdef DEBUG
   cout << "executing sensor function" << endl;
 #endif
 
+  if (type == 0) {
+    //temperature stuff here for sensor() function
+
+
+
+  } else if (type == 1) {
+    //water stuff here for sensor() function
+    
+    
+  }
+
   this->set_origin(1);
 }
 
-void Task::temperature() {
+void Task::sensor_AVG() {
 /*
   //add sensor task function here
   for (int i = 0; i < TEMP_NUM; i++){
@@ -167,7 +179,7 @@ void Task::temperature() {
   this->set_origin(2);
 }
 
-void Task::TempIO(){
+void Task::sensor_IO(){
 /*
   //read the average data inside the list
   if (float avg > TEMP_HIGH){
