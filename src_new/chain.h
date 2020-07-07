@@ -53,7 +53,7 @@ class Nonvol_data_mtx {
     std::vector<std::vector<int> > matrix;
 
     //Constructor. Allocates nonvolatile data array size.
-    Nonvol_data_mtx(int, int);
+    Nonvol_data_mtx(int m, int n);
 
     //class method to retrieve object's matrix contents attribute (via A(i,j) format)
     int& operator()(const int &row_num, const int &col_num);
