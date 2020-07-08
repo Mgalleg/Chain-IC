@@ -6,13 +6,18 @@
 // #include <cstdlib>
 // #include <ctime>
 
-#define ROW 10   //total number of tasks + 1; NOTE: last row is for origin storage
-#define COL 100  //total number of data members that we will record (per vector)
+#define ROW 5   //total number of tasks + 1 
+#define COL 10  //total number of data members that we will record (per vector)
 
-#define TEMP_NUM 3  //how many time to measure temperature
-#define TEMP_HIGH 90  //high temperature range
-#define TEMP_LOW 65 //low temperature range
+#define NUM 3  //how many time to measure temperature
+#define TEMP_HIGH 90.0  //high temperature range
+#define TEMP_LOW 65.0 //low temperature range
 
+#define WATER_HIGH 40.0  //high water range 40%
+#define WATER_LOW 20.0 //low water range 20%
+
+#define HUMID_HIGH 50.0  //high humidity range 40%
+#define HUMID_LOW 30.0 //low humidity range 20%
 #define DEBUG   //comment out to not include DEBUG code
 
 // Data struct: Data data collect from sensor to Channel,the blue color section in flow chart
