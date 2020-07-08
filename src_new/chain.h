@@ -112,9 +112,9 @@ class Task{
 
     //tasks
     void sensor_RAW(int model_type);
-    void sensor_IO(int model_type);
     void sensor_AVG(int model_type);
-
+    void sensor_IO(int model_type);
+    
     //read nonvolatile data structure (matrix) and allow access to data of matrix based 
     //on task_index (i.e. set task_index to index of PREVIOUS task)
  		float Ch_read(int task_index, int data_index, float Data_Index_Table[][100]);

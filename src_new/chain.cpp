@@ -266,11 +266,6 @@ void Task::sensor_IO(int model_type){
     Data_Index_Table[8][mtx_indx_cnt].set(0,0);
   }
 
-  if (mtx_indx_cnt == 9){
-    mtx_indx_cnt = 0;
-  }else{
-    mtx_indx_cnt++;
-  }
 
 #ifdef DEBUG
   cout << "executing Sensor IO function" << endl;
@@ -284,6 +279,11 @@ void Task::sensor_IO(int model_type){
     this->set_origin(2, 0);
   } else if (model_type == 2) {
     //humidity stuff here for sensor_IO() function
+    if (mtx_indx_cnt == 9){
+      mtx_indx_cnt = 0;
+    }else{
+      mtx_indx_cnt++;
+    }
     this->set_origin(0, 0);
   }
 }
