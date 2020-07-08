@@ -224,6 +224,7 @@ void Task::sensor_AVG(int model_type) {
   float avg = (A + B + C)/NUM;
 
 #ifdef DEBUG
+  cout<< "  raw data is: "<<A<<" | "<<B<<" | "<<C<<endl;
   cout << "executing Sensor AVG function" << endl;
 #endif
 
@@ -254,7 +255,7 @@ void Task::sensor_IO(int model_type){
     avg = Data_Index_Table[7][mtx_indx_cnt].read(0);
   }
 
-  cout<<"average number for this model is: "<<avg<<endl;
+  cout<<"   average number read non-vol memory is: "<<avg<<endl;
   
   //comparation function
   if (avg > TEMP_HIGH){
