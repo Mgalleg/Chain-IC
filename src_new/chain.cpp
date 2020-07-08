@@ -7,7 +7,7 @@ int origin_model;
 int origin_task;
 int mtx_indx_cnt; //column counter used for power reboots 
 
-vector<vector<float> > Data_Index_Table; //data matrix representing nonvolatile memory
+Data_nonvol Data_Index_Table[ROW][COL];//data matrix representing nonvolatile memory
 
 // Constructor of Data_nonvol class. Assigns NULL to head.
 Data_nonvol::Data_nonvol(){
@@ -156,17 +156,36 @@ void Task::set_origin(int model_idx, int task_idx){
 // Operator() function of Task class. Determines function (Task) to execute 
 // based on task index provided.
 void Task::operator()(int model_idx, int task_idx) {
+//add sensor task function here, randomly generate 3 float data between 100 to 50 degree
+  float A,B;
+  if(model_idx == 0) {A = 100.0;  B = 50.0;} //temp
+  else if(model_idx == 1) { A = 60.0;  B = 0.0;} //Water
+  else { A = 70.0;  B = 0.0;} //Humidity
 
-  //choose task type for model temperature 
-  if (task_idx == 0) {
+  for (int i = 0; i < NUM; i++){
+    float data = A + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(B-A)));
+    //choose task type for model temperature 
+    if (model_idx == 0) {
       //execute sensor_RAW() task for model type
-      this->sensor_RAW(model_idx);
-  } else if (task_idx == 1) {
-    //execute sensor_AVG() task for model type
-    this->sensor_AVG(model_idx);
-  } else if (task_idx == 2) {
-    //execute sensor_IO() task for model type
-    this->sensor_IO(model_idx);
+      Data_Index_Table[0][mtx_indx_cnt].set(i,data);
+    } else if (model_idx == 1) {
+      //execute sensor_AVG() task for model type
+      Data_Index_Table[3][mtx_indx_cnt].set(i,data);
+    } else if (model_idx == 2) {
+      //execute sensor_IO() task for model type
+      Data_Index_Table[6][mtx_indx_cnt].set(i,data);
+    }
+  }
+
+  if (model_idx == 0) {
+    //temperature stuff here for sensor_AVG() function
+    this->set_origin(model_idx, 2);
+  } else if (model_idx == 1) {
+    //water stuff here for sensor_AVG() function
+    this->set_origin(model_idx, 2);
+  } else if (model_idx == 2) {
+    //humidity stuff here for sensor_AVG() function
+    this->set_origin(model_idx, 2);
   }
 }
 
