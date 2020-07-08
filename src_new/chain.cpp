@@ -258,13 +258,13 @@ void Task::sensor_IO(int model_type){
   
   //comparation function
   if (avg > TEMP_HIGH){
-    cout<<"temperature too high, turn fan on"<<endl;
+    cout<<"**data too high**"<<endl;
     Data_Index_Table[2][mtx_indx_cnt].set(0,1);
   }else if(avg < TEMP_LOW){
-    cout<<"temperature too low, turn heater on"<<endl;
+    cout<<"**data too low**"<<endl;
     Data_Index_Table[5][mtx_indx_cnt].set(0,2);
   }else{
-    cout<<"temperature good"<<endl;
+    cout<<"**data good**"<<endl;
     Data_Index_Table[8][mtx_indx_cnt].set(0,0);
   }
 

@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   int cnt=0;
 #endif 
   
-  while (cnt < 12) { //change condition to '1' later
+  while (cnt < 18) { //change condition to '1' later
 
     orig_model = t0.get_origin_model();
     orig_task = t0.get_origin_task();
@@ -31,8 +31,8 @@ int main(int argc, char *argv[]) {
     t0(orig_model, orig_task);
     cnt++;
   }
-  
 
+  //cout<< Data_Index_Table[0][0].read(0);
 
 /*
 
