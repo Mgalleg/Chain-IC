@@ -98,6 +98,7 @@ Task::Task(int model_idx, int task_idx){
   //init model index and task index for Task class
   model_index = model_idx;
   task_index = task_idx;
+  mtx_indx_cnt = 0;
 }
 
 // Destructor of Task class.
@@ -197,78 +198,96 @@ void Task::sensor_RAW(int model_type) {
   cout << "executing Sensor RAW function" << endl;
 #endif
 
-  if (model_idx == 0) {
+  if (model_type == 0) {
     //temperature stuff here for sensor_AVG() function
-    this->set_origin(model_idx, 1);
-  } else if (model_idx == 1) {
+    this->set_origin(model_type, 1);
+  } else if (model_type == 1) {
     //water stuff here for sensor_AVG() function
-    this->set_origin(model_idx, 1);
-  } else if (model_idx == 2) {
+    this->set_origin(model_type, 1);
+  } else if (model_type == 2) {
     //humidity stuff here for sensor_AVG() function
-    this->set_origin(model_idx, 1);
+    this->set_origin(model_type, 1);
   }
 
 }
 
 void Task::sensor_AVG(int model_type) {
-/*
   //add sensor task function here
-  for (int i = 0; i < TEMP_NUM; i++){
-    //read from data structure
-    float avg = (A + B + C)/TEMP_NUM;
-    //write Avg inside data structure;
-  }
-*/
+  int table_index;
+  if (model_type == 0) {table_index = 0;}
+  else if(model_type == 1){table_index = 3;}
+  else{table_index = 6;}
+  float A,B,C;
+  A = Data_Index_Table[table_index][mtx_indx_cnt].read(0);
+  B = Data_Index_Table[table_index][mtx_indx_cnt].read(1);
+  C = Data_Index_Table[table_index][mtx_indx_cnt].read(2);
+  float avg = (A + B + C)/NUM;
+
 #ifdef DEBUG
   cout << "executing Sensor AVG function" << endl;
 #endif
 
   if (model_type == 0) {
     //temperature stuff here for sensor_AVG() function
-
+    Data_Index_Table[1][mtx_indx_cnt].set(0,avg);
     this->set_origin(model_type, 2);
   } else if (model_type == 1) {
     //water stuff here for sensor_AVG() function
-    
+    Data_Index_Table[4][mtx_indx_cnt].set(0,avg);
     this->set_origin(model_type, 2);
   } else if (model_type == 2) {
     //humidity stuff here for sensor_AVG() function
-    
+    Data_Index_Table[7][mtx_indx_cnt].set(0,avg);
     this->set_origin(model_type, 2);
   }
 }
 
 void Task::sensor_IO(int model_type){
-/*
+  //store 0 = temperature OK, 1 = too high, 2 = too low. 
   //read the average data inside the list
-  if (float avg > TEMP_HIGH){
+  float avg;
+  if (model_type == 0) {
+    avg = Data_Index_Table[1][mtx_indx_cnt].read(0);
+  }else if(model_type == 1){
+    avg = Data_Index_Table[4][mtx_indx_cnt].read(0);
+  }else{
+    avg = Data_Index_Table[7][mtx_indx_cnt].read(0);
+  }
+
+  //comparation function
+  if (avg > TEMP_HIGH){
     cout<<"temperature too high, turn fan on"<<endl;
-  }else if(float avg < TEMP_LOW){
+    Data_Index_Table[2][mtx_indx_cnt].set(0,1);
+  }else if(avg < TEMP_LOW){
     cout<<"temperature too low, turn heater on"<<endl;
+    Data_Index_Table[5][mtx_indx_cnt].set(0,2);
   }else{
     cout<<"temperature good"<<endl;
+    Data_Index_Table[8][mtx_indx_cnt].set(0,0);
   }
-*/
+
+  if (mtx_indx_cnt == 9){
+    mtx_indx_cnt = 0;
+  }else{
+    mtx_indx_cnt++;
+  }
+
 #ifdef DEBUG
   cout << "executing Sensor IO function" << endl;
 #endif
-
+  
   if (model_type == 0) {
     //temperature stuff here for sensor_IO() function
-
     this->set_origin(1, 0);
   } else if (model_type == 1) {
     //water stuff here for sensor_IO() function
-    
     this->set_origin(2, 0);
   } else if (model_type == 2) {
     //humidity stuff here for sensor_IO() function
-    
-
     this->set_origin(0, 0);
   }
 }
-
+/*
 //read nonvolatile data structure (matrix) and allow access to data of matrix based 
 //on task_index (i.e. set task_index to index of PREVIOUS task)
 float Task::Ch_read(int task_index, int data_index, float Data_Index_Table[][100]) {
@@ -288,6 +307,7 @@ float Task::Ch_read(int task_index, int data_index, float Data_Index_Table[][100
 
   return task_data;
 }
+*/
 
 //write to nonvolatile data structure (matrix) and allow access to data of 
 //matrix based on task_index (i.e. set task_index to index of NEXT task)
