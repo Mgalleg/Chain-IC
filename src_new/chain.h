@@ -111,9 +111,10 @@ class Task{
     void operator()(int model_idx, int task_idx);
 
     //tasks
-    void sensor_RAW(int model_type);
-    void sensor_IO(int model_type);
-    void sensor_AVG(int model_type);
+    void sensor_RAW(int model_type); //task 1
+    void sensor_AVG(int model_type); //task 2
+    void sensor_IO(int model_type);   //taks 3
+  
 
     //read nonvolatile data structure (matrix) and allow access to data of matrix based 
     //on model_idx (i.e. set model_idx to index of PREVIOUS task)

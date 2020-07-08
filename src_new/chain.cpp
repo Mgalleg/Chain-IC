@@ -254,6 +254,8 @@ void Task::sensor_IO(int model_type){
     avg = Data_Index_Table[7][mtx_indx_cnt].read(0);
   }
 
+  cout<<avg<<endl;
+  
   //comparation function
   if (avg > TEMP_HIGH){
     cout<<"temperature too high, turn fan on"<<endl;
@@ -264,12 +266,6 @@ void Task::sensor_IO(int model_type){
   }else{
     cout<<"temperature good"<<endl;
     Data_Index_Table[8][mtx_indx_cnt].set(0,0);
-  }
-
-  if (mtx_indx_cnt == 9){
-    mtx_indx_cnt = 0;
-  }else{
-    mtx_indx_cnt++;
   }
 
 #ifdef DEBUG
@@ -283,6 +279,11 @@ void Task::sensor_IO(int model_type){
     //water stuff here for sensor_IO() function
     this->set_origin(2, 0);
   } else if (model_type == 2) {
+    if (mtx_indx_cnt == 9){
+      mtx_indx_cnt = 0;
+    }else{
+      mtx_indx_cnt++;
+    }
     //humidity stuff here for sensor_IO() function
     this->set_origin(0, 0);
   }

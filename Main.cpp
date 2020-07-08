@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   int cnt=0;
 #endif 
   
-  while (cnt < 2) { //change condition to '1' later
+  while (cnt < 12) { //change condition to '1' later
 
     orig_model = t0.get_origin_model();
     orig_task = t0.get_origin_task();
