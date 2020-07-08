@@ -18,6 +18,7 @@
 
 #define HUMID_HIGH 50.0  //high humidity range 40%
 #define HUMID_LOW 30.0 //low humidity range 20%
+
 #define DEBUG   //comment out to not include DEBUG code
 
 // Data struct: Data data collect from sensor to Channel,the blue color section in flow chart
