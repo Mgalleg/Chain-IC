@@ -129,10 +129,10 @@ int Task::get_origin_task(){
   
   
   //just for now, use origin_task = 0
-  int origin_task_idx = 0;    //delete later
+  // int origin_task_idx = 0;    //delete later
 
 
-  origin_task = origin_task_idx;
+  // origin_task = origin_task_idx;
   
   //return tuple origin_model and origin_task global variables that were stored in 
   //nonvolatile memory
@@ -287,32 +287,40 @@ void Task::sensor_IO(int model_type){
     this->set_origin(0, 0);
   }
 }
-/*
+
 //read nonvolatile data structure (matrix) and allow access to data of matrix based 
-//on task_index (i.e. set task_index to index of PREVIOUS task)
-float Task::Ch_read(int task_index, int data_index, float Data_Index_Table[][100]) {
+//on model_idx (i.e. set model_idx to index of PREVIOUS task)
+Data_nonvol Task::Ch_read(int model_idx, int task_idx, float Data_Index_Table[][100]) {
 
   //read nonvolatile memory for most recent update 
   //NOTE: this is extra work and supposed to represent actually having 
   //FRAM to read from, otherwise, would be simple return of data.
   Data_nonvol task_data;
+  int row;
   
-  for (int i=0; i <= task_index; i++) {
-    if (i == task_index) {
+  if (model_idx == 0) {
+    row = task_idx;
+  } else if (model_idx == 1) {
+    row = task_idx + 3;
+  } else if (model_idx == 2) {
+    row = task_idx + 6;
+  }
+  
+  for (int i=0; i <= row; i++) {
+    if (i == row) {
       for (int j=0; j < COL; j++) {
-        task_data.set(j, Din.matrix[i][j]);
+        task_data.set(j, Data_Index_Table[i][j]);
       }
     }
   }
 
   return task_data;
 }
-*/
 
 //write to nonvolatile data structure (matrix) and allow access to data of 
-//matrix based on task_index (i.e. set task_index to index of NEXT task)
-void Task::Ch_write(int task_index, int data_index, float Data_Index_Table[][100]) {
-  //do something with task_index 
+//matrix based on model_idx (i.e. set model_idx to index of NEXT task)
+void Task::Ch_write(int model_idx, int task_idx, float Data_Index_Table[][100]) {
+  //do something with model_idx 
   
   //write data to nonvolatile memory after some task completes
   //NOTE: this is extra work and supposed to represent actually having 
@@ -320,8 +328,8 @@ void Task::Ch_write(int task_index, int data_index, float Data_Index_Table[][100
 
   // Data_nonvol task_data;
 
-  // for (int i=0; i <= task_index; i++) {
-    // if (i == task_index) {
+  // for (int i=0; i <= model_idx; i++) {
+    // if (i == model_idx) {
       // for (int j=0; j < COL; j++) {
         // task_data.set(j, Din.matrix[i][j]);
       // }

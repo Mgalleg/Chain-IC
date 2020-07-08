@@ -1,10 +1,10 @@
 #include <iostream>
 #include <map>
 #include <vector>
-// #include <time.h>
-// #include <random>
-// #include <cstdlib>
-// #include <ctime>
+#include <time.h>
+#include <random>
+#include <cstdlib>
+#include <ctime>
 
 #define ROW 5   //total number of tasks + 1 
 #define COL 10  //total number of data members that we will record (per vector)
@@ -116,11 +116,11 @@ class Task{
     void sensor_AVG(int model_type);
 
     //read nonvolatile data structure (matrix) and allow access to data of matrix based 
-    //on task_index (i.e. set task_index to index of PREVIOUS task)
- 		float Ch_read(int task_index, int data_index, float Data_Index_Table[][100]);
+    //on model_idx (i.e. set model_idx to index of PREVIOUS task)
+ 		Data_nonvol Ch_read(int model_idx, int task_idx, float Data_Index_Table[][100]);
     
     //write to nonvolatile data structure (matrix) and allow access to data of 
-    //matrix based on task_index (i.e. set task_index to index of NEXT task)
-    void Ch_write(int task_index, int data_index, float Data_Index_Table[][100]); 
+    //matrix based on model_idx (i.e. set model_idx to index of NEXT task)
+    void Ch_write(int model_idx, int task_idx, float Data_Index_Table[][100]); 
 
 };
