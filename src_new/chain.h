@@ -41,6 +41,8 @@ class Data_nonvol{
     float read(int index);              //read value of Data type from list at index
 };
 
+/*
+
 //Matrix class that will use the index of the Task (t0) to determine which data 
 //is accessible to the task (i.e. Task Sensor (with index 0) has access to Matrix data (index 0))
 class Nonvol_data_mtx {
@@ -77,6 +79,7 @@ class Nonvol_data_mtx {
 
 };
 
+*/
 
 // Task class that represents linked list of tasks. Task class is a doubly linked list
 // that includes set_origin functions, which have access to Class Data_nonvol
@@ -108,10 +111,10 @@ class Task{
 
     //read nonvolatile data structure (matrix) and allow access to data of matrix based 
     //on task_index (i.e. set task_index to index of PREVIOUS task)
- 		Data_nonvol Ch_read(int task_index, int data_index, Nonvol_data_mtx Din);
+ 		float Ch_read(int task_index, int data_index, float Data_Index_Table[][100]);
     
     //write to nonvolatile data structure (matrix) and allow access to data of 
     //matrix based on task_index (i.e. set task_index to index of NEXT task)
-    void Ch_write(int task_index, int data_index, Nonvol_data_mtx Dout); 
+    void Ch_write(int task_index, int data_index, float Data_Index_Table[][100]); 
 
 };

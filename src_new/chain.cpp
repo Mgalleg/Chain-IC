@@ -60,6 +60,8 @@ float Data_nonvol::read(int index){
   }
 }
 
+/*
+
 // Constructor. Allocates nonvolatile data array size.
 Nonvol_data_mtx::Nonvol_data_mtx(int row, int col){
   row = ROW;
@@ -88,6 +90,8 @@ void Nonvol_data_mtx::set(int row_num, int col_num, float value){
 float Nonvol_data_mtx::get(int row_num, int col_num){
   return matrix[row_num][col_num];
 }
+
+*/
 
 // Constructor of Task class.
 Task::Task(int model_idx, int task_idx){
@@ -247,22 +251,22 @@ void Task::sensor_IO(int model_type){
   if (model_type == 0) {
     //temperature stuff here for sensor_IO() function
 
-    this->set_origin(model_type, 0);
+    this->set_origin(1, 0);
   } else if (model_type == 1) {
     //water stuff here for sensor_IO() function
     
-    this->set_origin(model_type, 0);
+    this->set_origin(2, 0);
   } else if (model_type == 2) {
     //humidity stuff here for sensor_IO() function
     
 
-    this->set_origin(model_type, 0);
+    this->set_origin(0, 0);
   }
 }
 
 //read nonvolatile data structure (matrix) and allow access to data of matrix based 
 //on task_index (i.e. set task_index to index of PREVIOUS task)
-Data_nonvol Task::Ch_read(int task_index, int data_index, Nonvol_data_mtx Din) {
+float Task::Ch_read(int task_index, int data_index, float Data_Index_Table[][100]) {
 
   //read nonvolatile memory for most recent update 
   //NOTE: this is extra work and supposed to represent actually having 
@@ -282,7 +286,7 @@ Data_nonvol Task::Ch_read(int task_index, int data_index, Nonvol_data_mtx Din) {
 
 //write to nonvolatile data structure (matrix) and allow access to data of 
 //matrix based on task_index (i.e. set task_index to index of NEXT task)
-void Task::Ch_write(int task_index, int data_index, Nonvol_data_mtx Dout) {
+void Task::Ch_write(int task_index, int data_index, float Data_Index_Table[][100]) {
   //do something with task_index 
   
   //write data to nonvolatile memory after some task completes
