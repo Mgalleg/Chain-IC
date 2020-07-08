@@ -113,10 +113,10 @@ int Task::get_origin_model(){
   
   
   //just for now, use origin_model = 0
-  int origin_model_idx = 0;    //delete later
+  //int origin_model_idx = 0;    //delete later
 
 
-  origin_model = origin_model_idx;
+  //origin_model = origin_model_idx;
   
   //return tuple origin_model and origin_task global variables that were stored in 
   //nonvolatile memory
@@ -254,7 +254,7 @@ void Task::sensor_IO(int model_type){
     avg = Data_Index_Table[7][mtx_indx_cnt].read(0);
   }
 
-  cout<<avg<<endl;
+  cout<<"average number for this model is: "<<avg<<endl;
   
   //comparation function
   if (avg > TEMP_HIGH){
@@ -270,6 +270,7 @@ void Task::sensor_IO(int model_type){
 
 #ifdef DEBUG
   cout << "executing Sensor IO function" << endl;
+  cout << "---------------------------------------"<<endl;
 #endif
   
   if (model_type == 0) {

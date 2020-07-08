@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     orig_task = t0.get_origin_task();
 
 #ifdef DEBUG
-    cout << "orig_model is " << orig_model << "orig_task is " << orig_task << endl;
+    cout << "orig_model is: " << orig_model << " orig_task is: " << orig_task << endl;
 #endif
 
     //use Task operator to execute next task based on index ("orig")

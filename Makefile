@@ -5,7 +5,7 @@ CXX = g++
 #LIBINCLUDES = -L $(HOME)/lib
 #INC = $(INCLUDES) #$(LIBINCLUDES)
 
-CXXFLAGS = -g -Wall -std=c++11
+CXXFLAGS = -g -Wall
 SRCS = Main.cpp chainSIM.cpp src_new/chain.cpp
 OBJS = $(subst .cpp,.o,$(SRCS))
 
