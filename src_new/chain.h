@@ -121,6 +121,7 @@ class Task{
     
     //write to nonvolatile data structure (matrix) and allow access to data of 
     //matrix based on model_idx (i.e. set model_idx to index of NEXT task)
-    void Ch_write(int model_idx, int task_idx, float Data_Index_Table[][100]); 
+    //void Ch_write(int model_idx, int task_idx, float //Data_Index_Table[][100]); 
 
+		void wait();
 };
