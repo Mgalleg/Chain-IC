@@ -5,6 +5,7 @@
 #include <random>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 
 #define ROW 5   //total number of tasks + 1 
 #define COL 10  //total number of data members that we will record (per vector)
@@ -45,6 +46,7 @@ class Data_nonvol{
     }
     void set(int index, float value);   //add value of Data type to list at index 
     float read(int index);              //read value of Data type from list at index
+
 };
 
 /*
@@ -117,11 +119,11 @@ class Task{
   
     //read nonvolatile data structure (matrix) and allow access to data of matrix based 
     //on model_idx (i.e. set model_idx to index of PREVIOUS task)
- 		Data_nonvol Ch_read(int model_idx, int task_idx, float Data_Index_Table[][100]);
+ 		//Data_nonvol Ch_read(int model_idx, int task_idx, float Data_Index_Table[][100]);
     
     //write to nonvolatile data structure (matrix) and allow access to data of 
     //matrix based on model_idx (i.e. set model_idx to index of NEXT task)
     //void Ch_write(int model_idx, int task_idx, float //Data_Index_Table[][100]); 
 
-		void wait();
+		void wait(int duration);
 };

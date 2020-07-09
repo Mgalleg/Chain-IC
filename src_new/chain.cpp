@@ -346,3 +346,10 @@ void Task::Ch_write(int model_idx, int task_idx, float Data_Index_Table[][100]) 
   
 }
 */
+
+void wait(int duration) {
+	// print non-volatile data and wait for recharge 
+
+
+
+}
