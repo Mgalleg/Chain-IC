@@ -81,7 +81,7 @@ class Task{
     void sensor_AVG(int model_type); //task 2
     void sensor_IO(int model_type);   //taks 3
 
-
+		//wait function for recharging and printing 
 		void wait(int duration);
 };
 

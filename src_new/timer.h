@@ -9,7 +9,7 @@ class Timer {
 		void setTimeout (auto function, int delay);
 		void setInterval(auto function, int interval);
 		void stop();
-};
+}; 
 
 void Timer::setTimeout(auto function, int delay) {
 	this->clear = false;

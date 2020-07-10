@@ -33,16 +33,46 @@ int main(int argc, char *argv[]) {
   }
 
   //cout<< Data_Index_Table[0][0].read(0);
-	
-	// sample code with timer 
-	
+
+	// sample code with timer
+	// missing: waveform data to determine intervalOn, intervalOff, and num_intervals
+	Task t0(0,1);
+	int orig_model = t0.get_origin_model();
+	int orig_task = t0.get_orig_task();
+	int c = 35; // to be determined 
+	int num_intervals = 0; // to be determined 
+	int i = 1, x = 1; 
+	std::vector<int> intervalOn; // to be determined 
+	std::vector<int> intervalOff; // to be determined 
+
+	Timer t = Timer();
+
+	while(i < num_intervals) {
+		t.setInterval([&] () {
+			power_on(t0, orig_model, orig_task);
+		}, intervalOn[x]*c;
+
+		t.setInterval([&] () {
+			i++;
+			x++;
+			
+			power_off(t0, orig_model, orig_task);
+
+		}, intervalOff[x]*c);
+	}
+
 	return 0;
 } 
 
+void power_on(Task &t, int orig_model, int orig_task) {
+	t(orig_model, orig_task);
+	orig_model = t.get_origin_model();
+	orig_task = t.get_origin_task();
+}
 
-
-
-
+void power_off(Task &t, orig_model, orig_task) {
+	// code to print out non-vol data
+}
 
 /*
 
