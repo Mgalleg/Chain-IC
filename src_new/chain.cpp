@@ -80,8 +80,8 @@ int Task::get_origin_task(){
   return origin_task;
 }
 
-//Set_origin function of Task class. Sets the origin variable (i.e. the index of task 
-//that will be the first task executed upon resuming after power failure).
+// Set_origin function of Task class. Sets the origin variable (i.e. the index of task 
+// that will be the first task executed upon resuming after power failure).
 void Task::set_origin(int model_idx, int task_idx){
   origin_model = model_idx;
   origin_task = task_idx;  
@@ -106,7 +106,6 @@ void Task::operator()(int model_idx, int task_idx) {
 
 void Task::sensor_RAW(int model_type) {
 
-//add sensor task function here, randomly generate 3 float data between 100 to 50 degree
   float A,B;
   if(model_type == 0) {A = 100.0;  B = 50.0;} //temp
   else if(model_type == 1) { A = 60.0;  B = 0.0;} //Water
@@ -131,6 +130,7 @@ void Task::sensor_RAW(int model_type) {
   cout << "executing Sensor RAW function" << endl;
 #endif
 
+	// seems like it always executes this->set_origin(model_type, 1); regardless of what model it is
   if (model_type == 0) {
     //temperature stuff here for sensor_AVG() function
     this->set_origin(model_type, 1);
@@ -232,7 +232,7 @@ void Task::sensor_IO(int model_type){
 void wait(int duration) {
 	// print non-volatile data and wait for recharge 
 
-	
+
 
 
 }
