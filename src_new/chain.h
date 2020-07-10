@@ -49,6 +49,48 @@ class Data_nonvol{
 
 };
 
+// Task class that represents linked list of tasks. Task class is a doubly linked list
+// that includes set_origin functions, which have access to Class Data_nonvol
+class Task{
+  public:
+    Task(int model_idx, int task_idx);
+    ~Task();
+
+    //model_index used to determine model type: index=0 (temperature), index=1 (water), 
+    //index=2 (humidity)
+    int model_index;
+    //task_index used for task type: index=0 (sensor raw), index=1 (sensor avg), 
+    //index=2 (sensor io)
+    int task_index;
+    //returns variables origin_model (stored in nonvolatile memory)
+    int get_origin_model();
+    //returns variables origin_task (stored in nonvolatile memory)
+    int get_origin_task();
+    //sets variables origin_model and origin_task and stores into nonvolatile memory
+    void set_origin(int model_idx, int task_idx);
+    // Operator() function of Task class. Determines function (Task) to execute 
+    // based off of task_idx provided.
+    void operator()(int model_idx, int task_idx);
+
+    //tasks
+    void sensor_RAW(int model_type); //task 1
+    void sensor_AVG(int model_type); //task 2
+    void sensor_IO(int model_type);   //taks 3
+  
+    //read nonvolatile data structure (matrix) and allow access to data of matrix based 
+    //on model_idx (i.e. set model_idx to index of PREVIOUS task)
+ 		//Data_nonvol Ch_read(int model_idx, int task_idx, float Data_Index_Table[][100]);
+    
+    //write to nonvolatile data structure (matrix) and allow access to data of 
+    //matrix based on model_idx (i.e. set model_idx to index of NEXT task)
+    //void Ch_write(int model_idx, int task_idx, float //Data_Index_Table[][100]); 
+
+		void wait(int duration);
+};
+
+
+// previously used code that is currently not being used
+
 /*
 
 //Matrix class that will use the index of the Task (t0) to determine which data 
@@ -88,42 +130,3 @@ class Nonvol_data_mtx {
 };
 
 */
-
-// Task class that represents linked list of tasks. Task class is a doubly linked list
-// that includes set_origin functions, which have access to Class Data_nonvol
-class Task{
-  public:
-    Task(int model_idx, int task_idx);
-    ~Task();
-
-    //model_index used to determine model type: index=0 (temperature), index=1 (water), 
-    //index=2 (humidity)
-    int model_index;
-    //task_index used for task type: index=0 (sensor raw), index=1 (sensor avg), 
-    //index=2 (sensor io)
-    int task_index;
-    //returns variables origin_model (stored in nonvolatile memory)
-    int get_origin_model();
-    //returns variables origin_task (stored in nonvolatile memory)
-    int get_origin_task();
-    //sets variables origin_model and origin_task and stores into nonvolatile memory
-    void set_origin(int model_idx, int task_idx);
-    // Operator() function of Task class. Determines function (Task) to execute 
-    // based off of task_idx provided.
-    void operator()(int model_idx, int task_idx);
-
-    //tasks
-    void sensor_RAW(int model_type); //task 1
-    void sensor_AVG(int model_type); //task 2
-    void sensor_IO(int model_type);   //taks 3
-  
-    //read nonvolatile data structure (matrix) and allow access to data of matrix based 
-    //on model_idx (i.e. set model_idx to index of PREVIOUS task)
- 		//Data_nonvol Ch_read(int model_idx, int task_idx, float Data_Index_Table[][100]);
-    
-    //write to nonvolatile data structure (matrix) and allow access to data of 
-    //matrix based on model_idx (i.e. set model_idx to index of NEXT task)
-    //void Ch_write(int model_idx, int task_idx, float //Data_Index_Table[][100]); 
-
-		void wait(int duration);
-};
