@@ -7,7 +7,7 @@ int origin_model;
 int origin_task;
 int mtx_indx_cnt; //column counter used for power reboots 
 
-Data_nonvol Data_Index_Table[ROW][COL];//data matrix representing nonvolatile memory
+Data_nonvol Data_Index_Table[ROW][COL]; //data matrix representing nonvolatile memory
 
 // Constructor of Data_nonvol class. Assigns NULL to head.
 Data_nonvol::Data_nonvol(){
@@ -71,54 +71,20 @@ Task::Task(int model_idx, int task_idx){
 // Destructor of Task class.
 Task::~Task() {}
 
-//Get_origin function of Task class. Returns the origin task variable "origin"
-//which is stored in nonvolatile memory. This function will read data structure
-//Nonvol_data_mtx (matrix) to find origin variable, which is stored in last row
+// Get_origin function of Task class. Returns the model of the current origin task.
 int Task::get_origin_model(){
-  //add code here to read nonvolatile memory based on last row index to get 
-  //origin_model and origin_task global variables
-  
-  
-  //just for now, use origin_model = 0
-  //int origin_model_idx = 0;    //delete later
-
-
-  //origin_model = origin_model_idx;
-  
-  //return tuple origin_model and origin_task global variables that were stored in 
-  //nonvolatile memory
   return origin_model;
 }
 
 int Task::get_origin_task(){
-  //add code here to read nonvolatile memory based on last row index to get 
-  //origin_model and origin_task global variables
-  
-  
-  //just for now, use origin_task = 0
-  // int origin_task_idx = 0;    //delete later
-
-
-  // origin_task = origin_task_idx;
-  
-  //return tuple origin_model and origin_task global variables that were stored in 
-  //nonvolatile memory
   return origin_task;
 }
 
 //Set_origin function of Task class. Sets the origin variable (i.e. the index of task 
 //that will be the first task executed upon resuming after power failure).
 void Task::set_origin(int model_idx, int task_idx){
-  
-  //Since origin variable is volatile (i.e. global), store origin variable in nonvolatile 
-  //memory at last index of matrix. This stored origin variable will later be accessed 
-  //via get_origin() function.
-
-
-  //for now, just set like so...delete later
   origin_model = model_idx;
   origin_task = task_idx;  
-  
 }
 
 // Operator() function of Task class. Determines function (Task) to execute 
@@ -266,6 +232,7 @@ void Task::sensor_IO(int model_type){
 void wait(int duration) {
 	// print non-volatile data and wait for recharge 
 
+	
 
 
 }
@@ -275,6 +242,52 @@ void wait(int duration) {
 
 
 // previously used code that is currently not being used
+/*
+int Task::get_origin_model(){
+  //add code here to read nonvolatile memory based on last row index to get 
+  //origin_model and origin_task global variables
+  //just for now, use origin_model = 0
+  //int origin_model_idx = 0;    //delete later
+  //origin_model = origin_model_idx;
+  //return tuple origin_model and origin_task global variables that were stored in 
+  //nonvolatile memory
+	
+  return origin_model;
+}
+
+int Task::get_origin_task(){
+  //add code here to read nonvolatile memory based on last row index to get 
+  //origin_model and origin_task global variables
+  
+  
+  //just for now, use origin_task = 0
+  // int origin_task_idx = 0;    //delete later
+
+
+  // origin_task = origin_task_idx;
+  
+  //return tuple origin_model and origin_task global variables that were stored in 
+  //nonvolatile memory
+  return origin_task;
+}
+
+//Set_origin function of Task class. Sets the origin variable (i.e. the index of task 
+//that will be the first task executed upon resuming after power failure).
+void Task::set_origin(int model_idx, int task_idx){
+  
+  //Since origin variable is volatile (i.e. global), store origin variable in nonvolatile 
+  //memory at last index of matrix. This stored origin variable will later be accessed 
+  //via get_origin() function.
+
+
+  //for now, just set like so...delete later
+  origin_model = model_idx;
+  origin_task = task_idx;  
+  
+}
+
+*/
+
 
 /*
 
