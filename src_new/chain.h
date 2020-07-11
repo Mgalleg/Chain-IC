@@ -5,8 +5,10 @@
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
+#include <unistd.h>
+#include <tuple>
 
-#define ROW 5   //total number of tasks + 1 
+#define ROW 9   //total number of tasks + 1 
 #define COL 10  //total number of data members that we will record (per vector)
 
 #define NUM 3  //how many time to measure temperature
@@ -43,9 +45,9 @@ class Data_nonvol{
     Data *getHead(){
       return this->head;
     }
+    int length;
     void set(int index, float value);   //add value of Data type to list at index 
     float read(int index);              //read value of Data type from list at index
-
 };
 
 // Task class that represents linked list of tasks. Task class is a doubly linked list
@@ -84,6 +86,12 @@ class Task{
 		//wait function for recharging and printing 
 		void wait(int duration);
 };
+
+void wait(int duration);
+
+void data_read(int x_row);
+
+void MultiOut(int most_recent_many);
 
 
 // previously used code that is currently not being used

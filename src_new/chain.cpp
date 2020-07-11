@@ -24,6 +24,7 @@ void Data_nonvol::set(int index,float value){
     head->value = value;
     head->index = index;
     head->next = NULL;
+    length = 1;
   }
   else{ //insert new data at the end of list
     Data *p = head;
@@ -35,6 +36,7 @@ void Data_nonvol::set(int index,float value){
     t->value = value;
     t->index = index;
     t->next = NULL;
+    length ++;
   }
 }
 
@@ -90,7 +92,7 @@ void Task::set_origin(int model_idx, int task_idx){
 // Operator() function of Task class. Determines function (Task) to execute 
 // based on task index provided.
 void Task::operator()(int model_idx, int task_idx) {
-
+  cout<<"++current row index: "<<mtx_indx_cnt<<endl;
   //choose task type for model temperature 
   if (task_idx == 0) {
       //execute sensor_RAW() task for model type
@@ -180,26 +182,38 @@ void Task::sensor_IO(int model_type){
   //store 0 = temperature OK, 1 = too high, 2 = too low. 
   //read the average data inside the list
   float avg;
+  float high_range;
+  float low_range;
+  int index;
   if (model_type == 0) {
     avg = Data_Index_Table[1][mtx_indx_cnt].read(0);
+    high_range = TEMP_HIGH;
+    low_range = TEMP_HIGH;
+    index = 2;
   }else if(model_type == 1){
     avg = Data_Index_Table[4][mtx_indx_cnt].read(0);
+    high_range = WATER_HIGH;
+    low_range = WATER_LOW;
+    index = 5;
   }else{
     avg = Data_Index_Table[7][mtx_indx_cnt].read(0);
+    high_range = HUMID_HIGH;
+    low_range = HUMID_LOW;
+    index = 8;
   }
 
   cout<<"   average number read non-vol memory is: "<<avg<<endl;
   
   //comparation function
-  if (avg > TEMP_HIGH){
+  if (avg > high_range){
     cout<<"**data too high**"<<endl;
-    Data_Index_Table[2][mtx_indx_cnt].set(0,1);
-  }else if(avg < TEMP_LOW){
+    Data_Index_Table[index][mtx_indx_cnt].set(0,1);
+  }else if(avg < low_range){
     cout<<"**data too low**"<<endl;
-    Data_Index_Table[5][mtx_indx_cnt].set(0,2);
+    Data_Index_Table[index][mtx_indx_cnt].set(0,2);
   }else{
     cout<<"**data good**"<<endl;
-    Data_Index_Table[8][mtx_indx_cnt].set(0,0);
+    Data_Index_Table[index][mtx_indx_cnt].set(0,0);
   }
 
 #ifdef DEBUG
@@ -219,24 +233,44 @@ void Task::sensor_IO(int model_type){
     }else{
       mtx_indx_cnt++;
     }
-    //humidity stuff here for sensor_IO() function
-    if (mtx_indx_cnt == 9){
-      mtx_indx_cnt = 0;
-    }else{
-      mtx_indx_cnt++;
-    }
     this->set_origin(0, 0);
   }
 }
 
+//this function is calling for the wait set and print out the most resent data set on the current round;
 void wait(int duration) {
-	// print non-volatile data and wait for recharge 
-
-
-
-
+  // print non-volatile data and wait for recharge 
+  sleep(duration);
+  cout << "enter the wait function"<<endl;
+  data_read(mtx_indx_cnt);
 }
 
+//this function to measure a paticular set of three model data in non-volatile memory
+//input the col number want to read
+void data_read(int x_row){ 
+  for (int i = 0; i < ROW; i++){
+    cout<<"data inside:["<<i<<"]["<<x_row<<"]"<<endl;
+    for(int j = 0; j < Data_Index_Table[i][x_row].length; j++){
+      cout<<Data_Index_Table[i][x_row].read(j)<<" ";
+    }
+    cout<<endl;
+  }
+}
+
+//this function is to print out the most recent many group of data storage inside the non-volatile memory
+void MultiOut(int most_recent_many){
+  int data_row = mtx_indx_cnt;
+  int count = 0;
+  while(count < most_recent_many){
+     data_read(data_row);
+     data_row--;
+     if (data_row <0){
+       data_row = data_row +10;
+     }
+     count++;
+  }
+ 
+}
 
 
 

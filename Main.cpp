@@ -1,5 +1,5 @@
 #include "chainSIM.h"
-#include "timer.h"
+//#include "src_new/timer.h"
 
 using namespace std;
 
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 #endif 
   
   while (cnt < 18) { //change condition to '1' later
-
+    //wait(3);
     orig_model = t0.get_origin_model();
     orig_task = t0.get_origin_task();
 
@@ -33,6 +33,12 @@ int main(int argc, char *argv[]) {
     cnt++;
   }
 
+  MultiOut(2);
+  return 0;
+}
+
+
+/*
   //cout<< Data_Index_Table[0][0].read(0);
 
 	// sample code with timer
@@ -74,6 +80,7 @@ void power_on(Task &t, int orig_model, int orig_task) {
 void power_off(Task &t, orig_model, orig_task) {
 	// code to print out non-vol data
 }
+*/
 
 /*
 
