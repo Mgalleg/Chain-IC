@@ -238,6 +238,7 @@ void Task::sensor_IO(int model_type){
 }
 
 //this function is calling for the wait set and print out the most resent data set on the current round;
+//call wait(3); wait 3 second and print out the most recent COL data inside Index table.
 void wait(int duration) {
   // print non-volatile data and wait for recharge 
   sleep(duration);
@@ -247,6 +248,7 @@ void wait(int duration) {
 
 //this function to measure a paticular set of three model data in non-volatile memory
 //input the col number want to read
+//call data_read(3) means read the COL 3 data inside index table
 void data_read(int x_row){ 
   for (int i = 0; i < ROW; i++){
     cout<<"data inside:["<<i<<"]["<<x_row<<"]"<<endl;
@@ -258,6 +260,7 @@ void data_read(int x_row){
 }
 
 //this function is to print out the most recent many group of data storage inside the non-volatile memory
+//for call this function will be MultiOut(2);2 will represent the most recent 2 groups of data want to read out.
 void MultiOut(int most_recent_many){
   int data_row = mtx_indx_cnt;
   int count = 0;
@@ -269,9 +272,7 @@ void MultiOut(int most_recent_many){
      }
      count++;
   }
- 
 }
-
 
 
 
