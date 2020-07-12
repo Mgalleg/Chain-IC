@@ -28,7 +28,15 @@ void Data_nonvol::set(int index,float value){
   }
   else{ //insert new data at the end of list
     Data *p = head;
+    if (p->index == index){
+      p->value = value;
+      return;
+    }
     while(p->next != NULL){
+      if (p->index == index){
+        p->value = value;
+        return;
+      }
       p = p->next;
     }
     Data *t = new Data();
@@ -93,7 +101,7 @@ void Task::set_origin(int model_idx, int task_idx){
 // Operator() function of Task class. Determines function (Task) to execute 
 // based on task index provided.
 void Task::operator()(int model_idx, int task_idx) {
-  cout<<"++current row index: "<<mtx_indx_cnt<<endl;
+  //cout<<"++current row index: "<<mtx_indx_cnt<<endl;
   //choose next task based on model and task types
   if (task_idx == 0) {
       //execute sensor_RAW() task for model type
@@ -309,15 +317,35 @@ void Chsync(int most_recent_many){
   }
 }
 
-/*
 //MultiOut is to change data to the sychronize channel all during the same time, it can choose from the most recent channels and rewrite them during the same time
-//order for call this function: MultiOut(count, model1, )
-void MultiOut(int count, ...){
+//order for call this function: MultiOut(#of_sync_channels, value, model a, type a, index a, model b, type b, index b ......)
+//important, this function need to pass argument as double like:1.0
+//e.g.:  MultiOut(2,1.0,1.0,0.0,0.0,0.0,0.0,0.0);
+//this will wirte the position [0][x][0] && [3][x][0] to 1
+void MultiOut(double count, ...){
+  int size = (int)count; 
+  count = count*3 + 2;
   va_list varList;
-  va_start (varList, count);
-
-  for(int i = 0; i < count/2; i++){
-    
+  va_start(varList, count);
+  float v = (float)va_arg(varList,double);
+  int model,type,index,row;
+  cout<<count<<endl;
+  cout<<size<<endl;
+  cout<<v<<endl;
+  for(int i = 0; i < size; i++){
+    model = (int)va_arg(varList,double);
+    type = (int)va_arg(varList,double);
+    index = (int)va_arg(varList,double);
+    row = model * 3 + type;
+    cout<<model<<endl;
+    cout<<type<<endl;
+    cout<<index<<endl;
+    cout<<row<<endl;
+    for (int j = 0; j < 10; j++){
+      if (Data_Index_Table[row][j].getHead() != NULL){
+        Data_Index_Table[row][j].set(index,v);
+        cout<<"enter this loop"<<endl;
+      }
+    }
   }
 }
-*/
