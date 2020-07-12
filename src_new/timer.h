@@ -1,16 +1,17 @@
 #include <iostream>
 #include <thread>
-#incldue <chrono>
+#include <chrono>
 
 class Timer {
 	bool clear = false;
 
 	public:
 		void setTimeout (auto function, int delay);
-		void setInterval(auto function, int interval);
-		void stop();
+		//void setInterval(auto function, int interval);
+		//void stop();
 }; 
 
+/*
 void Timer::setTimeout(auto function, int delay) {
 	this->clear = false;
 	std::thread t([=]() {
@@ -20,7 +21,7 @@ void Timer::setTimeout(auto function, int delay) {
 		function();
 	});
 	t.detach();
-}
+}*/
 
 void Timer::setInterval(auto function, int interval) {
 	this->clear = false;
@@ -35,7 +36,9 @@ void Timer::setInterval(auto function, int interval) {
 	t.detach();
 }
 
+/*
 void Timer::stop() {
 	this->clear = true;
 }
+*/
 

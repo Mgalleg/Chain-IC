@@ -3,6 +3,9 @@
 
 using namespace std;
 
+void power_on(Task &t, int model, int task);
+void power_off(Task &t, int model, int task);
+
 int main(int argc, char *argv[]) {
 
 
@@ -34,11 +37,65 @@ int main(int argc, char *argv[]) {
   }
 
   Chsync(2);
+
+	// code to test timer
+
+	cout << "starting timer test" << endl;
+
+	Task t(0,1);
+	int model = t.get_origin_model();
+	int task = t.get_origin_task();
+
+	// sample interval
+	int c = 40;
+	int num_intervals = 3;
+	int i = 1, x = 1;
+
+	std::vector<int> intervalOn;
+	std::vector<int> intervalOff;
+
+	intervalOn.push_back(25);
+	intervalOn.push_back(25);
+	intervalOn.push_back(25);
+
+	intervalOn.push_back(75);
+	intervalOn.push_back(75);
+	intervalOn.push_back(75);
+
+	Timer time = Timer();
+	
+	while(i < num_intervals) {
+		time.setInterval([&] () {
+			power_on(t, model, task);
+		}, intervalOn[x]*c;
+
+		i++;
+		x++;
+
+		t.setInterval([&] () {
+
+			power_off(t, model, task);
+
+		}, intervalOff[x]*c);
+	}
+
+
+
   return 0;
 }
 
+void power_on(Task &t, int model, int task) {
+	t(model, task);
+	model = t.get_origin_model();
+	task = t.get_origin_task();
+}
+
+void power_off(Task &t, int model, int task) {
+	cout << "." << endl;
+}
 
 /*
+
   //cout<< Data_Index_Table[0][0].read(0);
 
 	// sample code with timer
@@ -80,8 +137,8 @@ void power_on(Task &t, int orig_model, int orig_task) {
 void power_off(Task &t, orig_model, orig_task) {
 	// code to print out non-vol data
 }
-*/
 
+*/
 /*
 
   //### COMPLETE ###
