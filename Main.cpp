@@ -1,5 +1,5 @@
-#include "chainSIM.h"
-//#include "src_new/timer.h"
+#include "src_new/chain.h"
+#include "src_new/timer.h"
 
 using namespace std;
 
@@ -67,16 +67,17 @@ int main(int argc, char *argv[]) {
 	while(i < num_intervals) {
 		time.setInterval([&] () {
 			power_on(t, model, task);
-		}, intervalOn[x]*c;
+		}, intervalOn[x]*c);
 
 		i++;
 		x++;
-
+		/*
 		time.setInterval([&] () {
 
 			power_off(t, model, task);
 
 		}, intervalOff[x]*c);
+		*/
 	}
 
 

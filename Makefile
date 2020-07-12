@@ -6,7 +6,7 @@ CXX = g++
 #INC = $(INCLUDES) #$(LIBINCLUDES)
 
 CXXFLAGS = -g -Wall -std=c++14
-SRCS = Main.cpp chainSIM.cpp src_new/chain.cpp
+SRCS = Main.cpp src_new/chain.cpp	src_new/timer.h
 OBJS = $(subst .cpp,.o,$(SRCS))
 
 all: Main
@@ -17,17 +17,15 @@ test-cpp:
 Main: $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o Main
 
-Main.o: Main.cpp chainSIM.h src_new/chain.h
+Main.o: Main.cpp src_new/chain.h	src_new/timer.h
 	$(CXX) $(CXXFLAGS) -c Main.cpp
 
-chainSIM.o: chainSIM.cpp chainSIM.h src_new/chain.h
-	$(CXX) $(CXXFLAGS) -c chainSIM.cpp
-
-chain.o: src_new/chain.cpp src_new/chain.h
-	$(CXX) $(CXXFLAGS) -c src_new/chain.cpp
+chain.o: src_new/chain.cpp src_new/chain
+	src_new/timer.h	$(CXX) $(CXXFLAGS) -c src_new/chain.cpp
 
 clean:
 	rm -rf *.o Main
+	rm -rf src_new/chain.o
 
 
 #all: Main.out
