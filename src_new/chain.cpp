@@ -86,14 +86,15 @@ int Task::get_origin_task(){
 // that will be the first task executed upon resuming after power failure).
 void Task::set_origin(int model_idx, int task_idx){
   origin_model = model_idx;
-  origin_task = task_idx;  
+  origin_task = task_idx;
+  cout << "New Origin Task Set!" << endl;
 }
 
 // Operator() function of Task class. Determines function (Task) to execute 
 // based on task index provided.
 void Task::operator()(int model_idx, int task_idx) {
   cout<<"++current row index: "<<mtx_indx_cnt<<endl;
-  //choose task type for model temperature 
+  //choose next task based on model and task types
   if (task_idx == 0) {
       //execute sensor_RAW() task for model type
       this->sensor_RAW(model_idx);
@@ -108,6 +109,10 @@ void Task::operator()(int model_idx, int task_idx) {
 
 void Task::sensor_RAW(int model_type) {
 
+#ifdef DEBUG
+  cout << "Executing Sensor RAW Task for ";
+#endif
+
   float A,B;
   if(model_type == 0) {A = 100.0;  B = 50.0;} //temp
   else if(model_type == 1) { A = 60.0;  B = 0.0;} //Water
@@ -115,39 +120,47 @@ void Task::sensor_RAW(int model_type) {
 
   for (int i = 0; i < NUM; i++){
     float data = A + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(B-A)));
-    //choose task type for model temperature 
     if (model_type == 0) {
-      //execute sensor_RAW() task for model type
+      //sensor_RAW() function for temperature model
+      cout << "Temperature Model" << endl;
       Data_Index_Table[0][mtx_indx_cnt].set(i,data);
     } else if (model_type == 1) {
-      //execute sensor_AVG() task for model type
+      //sensor_RAW() function for water model
+      cout << "Water Model" << endl;
       Data_Index_Table[3][mtx_indx_cnt].set(i,data);
     } else if (model_type == 2) {
-      //execute sensor_IO() task for model type
+      //sensor_RAW() function for humidity model
+      cout << "Humidity Model" << endl;
       Data_Index_Table[6][mtx_indx_cnt].set(i,data);
     }
   }
 
-#ifdef DEBUG
-  cout << "executing Sensor RAW function" << endl;
-#endif
-
-	// seems like it always executes this->set_origin(model_type, 1); regardless of what model it is
   if (model_type == 0) {
-    //temperature stuff here for sensor_AVG() function
+    //set next origin task to sensor_AVG() for temperature model
+    cout << "Setting Origin Task to sensor_AVG() for Temperature Model" << endl;
     this->set_origin(model_type, 1);
   } else if (model_type == 1) {
-    //water stuff here for sensor_AVG() function
+    //set next origin task to sensor_AVG() for water model
+    cout << "Setting Origin Task to sensor_AVG() for Water Model" << endl;
     this->set_origin(model_type, 1);
   } else if (model_type == 2) {
-    //humidity stuff here for sensor_AVG() function
+    //set next origin task to sensor_AVG() for humidity model
+    cout << "Setting Origin Task to sensor_AVG() for Humidity Model" << endl;
     this->set_origin(model_type, 1);
   }
+
+#ifdef DEBUG
+  cout << "---------------------------------------"<<endl;
+#endif
 
 }
 
 void Task::sensor_AVG(int model_type) {
-  //add sensor task function here
+
+#ifdef DEBUG
+  cout << "Executing Sensor AVG Task for ";
+#endif
+
   int table_index;
   if (model_type == 0) {table_index = 0;}
   else if(model_type == 1){table_index = 3;}
@@ -158,27 +171,39 @@ void Task::sensor_AVG(int model_type) {
   C = Data_Index_Table[table_index][mtx_indx_cnt].read(2);
   float avg = (A + B + C)/NUM;
 
-#ifdef DEBUG
-  cout<< "  raw data is: "<<A<<" | "<<B<<" | "<<C<<endl;
-  cout << "executing Sensor AVG function" << endl;
-#endif
-
   if (model_type == 0) {
-    //temperature stuff here for sensor_AVG() function
+    //sensor_AVG() function for temperature model
+    cout << "Temperature Model" << endl;
     Data_Index_Table[1][mtx_indx_cnt].set(0,avg);
+    cout << "Setting Origin Task to sensor_IO() for Temperature Model" << endl;
     this->set_origin(model_type, 2);
   } else if (model_type == 1) {
-    //water stuff here for sensor_AVG() function
+    //sensor_AVG() function for water model
+    cout << "Water Model" << endl;
     Data_Index_Table[4][mtx_indx_cnt].set(0,avg);
+    cout << "Setting Origin Task to sensor_IO() for Water Model" << endl;
     this->set_origin(model_type, 2);
   } else if (model_type == 2) {
-    //humidity stuff here for sensor_AVG() function
+    //sensor_AVG() function for humidity model
+    cout << "Humidity Model" << endl;
     Data_Index_Table[7][mtx_indx_cnt].set(0,avg);
+    cout << "Setting Origin Task to sensor_IO() for Humidity Model" << endl;
     this->set_origin(model_type, 2);
   }
+
+#ifdef DEBUG
+  cout<< "Raw data is: " << A << " | " << B << " | " << C << endl;
+  cout << "---------------------------------------"<<endl;
+#endif
+
 }
 
 void Task::sensor_IO(int model_type){
+
+#ifdef DEBUG
+  cout << "Executing Sensor IO Task for ";
+#endif
+
   //store 0 = temperature OK, 1 = too high, 2 = too low. 
   //read the average data inside the list
   float avg;
@@ -186,25 +211,31 @@ void Task::sensor_IO(int model_type){
   float low_range;
   int index;
   if (model_type == 0) {
+    cout << "Temperature Model" << endl;
+    //sensor_IO() function for temperature model
     avg = Data_Index_Table[1][mtx_indx_cnt].read(0);
     high_range = TEMP_HIGH;
     low_range = TEMP_HIGH;
     index = 2;
   }else if(model_type == 1){
+    cout << "Water Model" << endl;
+    //sensor_IO() function for water model
     avg = Data_Index_Table[4][mtx_indx_cnt].read(0);
     high_range = WATER_HIGH;
     low_range = WATER_LOW;
     index = 5;
   }else{
+    cout << "Humidity Model" << endl;
+    //sensor_IO() function for humidity model
     avg = Data_Index_Table[7][mtx_indx_cnt].read(0);
     high_range = HUMID_HIGH;
     low_range = HUMID_LOW;
     index = 8;
   }
 
-  cout<<"   average number read non-vol memory is: "<<avg<<endl;
+  cout << "Average data read from non-volatile memory is: " << avg << endl;
   
-  //comparation function
+  //comparison function
   if (avg > high_range){
     cout<<"**data too high**"<<endl;
     Data_Index_Table[index][mtx_indx_cnt].set(0,1);
@@ -216,16 +247,13 @@ void Task::sensor_IO(int model_type){
     Data_Index_Table[index][mtx_indx_cnt].set(0,0);
   }
 
-#ifdef DEBUG
-  cout << "executing Sensor IO function" << endl;
-  cout << "---------------------------------------"<<endl;
-#endif
-  
   if (model_type == 0) {
-    //temperature stuff here for sensor_IO() function
+    //set next origin task to sensor_RAW() for water model
+    cout << "Setting Origin Task to sensor_RAW() for Water Model" << endl;
     this->set_origin(1, 0);
   } else if (model_type == 1) {
-    //water stuff here for sensor_IO() function
+    //set next origin task to sensor_RAW() for humidity model
+    cout << "Setting Origin Task to sensor_RAW() for Humidity Model" << endl;
     this->set_origin(2, 0);
   } else if (model_type == 2) {
     if (mtx_indx_cnt == 9){
@@ -233,8 +261,15 @@ void Task::sensor_IO(int model_type){
     }else{
       mtx_indx_cnt++;
     }
+    //set next origin task to sensor_RAW() for temperature model
+    cout << "Setting Origin Task to sensor_RAW() for Temperature Model" << endl;
     this->set_origin(0, 0);
   }
+
+#ifdef DEBUG
+  cout << "---------------------------------------"<<endl;
+#endif
+
 }
 
 //this function is calling for the wait set and print out the most resent data set on the current round;
@@ -242,7 +277,7 @@ void Task::sensor_IO(int model_type){
 void wait(int duration) {
   // print non-volatile data and wait for recharge 
   sleep(duration);
-  cout << "enter the wait function"<<endl;
+  cout << "enter the wait function" << endl;
   data_read(mtx_indx_cnt);
 }
 
@@ -251,11 +286,11 @@ void wait(int duration) {
 //call data_read(3) means read the COL 3 data inside index table
 void data_read(int x_row){ 
   for (int i = 0; i < ROW; i++){
-    cout<<"data inside:["<<i<<"]["<<x_row<<"]"<<endl;
+    cout << "data inside:[" << i << "][" << x_row << "]" << endl;
     for(int j = 0; j < Data_Index_Table[i][x_row].length; j++){
-      cout<<Data_Index_Table[i][x_row].read(j)<<" ";
+      cout << Data_Index_Table[i][x_row].read(j) << " ";
     }
-    cout<<endl;
+    cout << endl;
   }
 }
 
@@ -284,139 +319,5 @@ void MultiOut(int count, ...){
   for(int i = 0; i < count/2; i++){
     
   }
-}
-*/
-
-
-// previously used code that is currently not being used
-/*
-int Task::get_origin_model(){
-  //add code here to read nonvolatile memory based on last row index to get 
-  //origin_model and origin_task global variables
-  //just for now, use origin_model = 0
-  //int origin_model_idx = 0;    //delete later
-  //origin_model = origin_model_idx;
-  //return tuple origin_model and origin_task global variables that were stored in 
-  //nonvolatile memory
-	
-  return origin_model;
-}
-
-int Task::get_origin_task(){
-  //add code here to read nonvolatile memory based on last row index to get 
-  //origin_model and origin_task global variables
-  
-  
-  //just for now, use origin_task = 0
-  // int origin_task_idx = 0;    //delete later
-
-
-  // origin_task = origin_task_idx;
-  
-  //return tuple origin_model and origin_task global variables that were stored in 
-  //nonvolatile memory
-  return origin_task;
-}
-
-//Set_origin function of Task class. Sets the origin variable (i.e. the index of task 
-//that will be the first task executed upon resuming after power failure).
-void Task::set_origin(int model_idx, int task_idx){
-  
-  //Since origin variable is volatile (i.e. global), store origin variable in nonvolatile 
-  //memory at last index of matrix. This stored origin variable will later be accessed 
-  //via get_origin() function.
-
-
-  //for now, just set like so...delete later
-  origin_model = model_idx;
-  origin_task = task_idx;  
-  
-}
-
-*/
-
-
-/*
-
-// Constructor. Allocates nonvolatile data array size.
-Nonvol_data_mtx::Nonvol_data_mtx(int row, int col){
-  row = ROW;
-  col = COL;
-  //arbitrary size allocatation of matrix to represent limited nonvolatile memory
-	matrix.resize(row, vector<int>(col));
-}
-
-//Destructor. Deletes the vector array.
-Nonvol_data_mtx::~Nonvol_data_mtx(){
-  this->matrix.clear();
-  vector<vector<int> >().swap(this->matrix);
-}
-
-//class method to retrieve object's matrix contents attribute (via A(i,j) format) 
-int& Nonvol_data_mtx::operator()(const int &row_num, const int &col_num) {
-	return this->matrix[row_num][col_num];
-}
-
-//Inserts or updates an element of the Matrix.
-void Nonvol_data_mtx::set(int row_num, int col_num, float value){
-  matrix[row_num][col_num] = value;
-}
-
-//Retrieves the element of the Matrix.
-float Nonvol_data_mtx::get(int row_num, int col_num){
-  return matrix[row_num][col_num];
-}
-
-*/
-
-/*
-//read nonvolatile data structure (matrix) and allow access to data of matrix based 
-//on model_idx (i.e. set model_idx to index of PREVIOUS task)
-Data_nonvol Task::Ch_read(int model_idx, int task_idx, float Data_Index_Table[][100]) {
-
-  //read nonvolatile memory for most recent update 
-  //NOTE: this is extra work and supposed to represent actually having 
-  //FRAM to read from, otherwise, would be simple return of data.
-  Data_nonvol task_data;
-  int row;
-  
-  if (model_idx == 0) {
-    row = task_idx;
-  } else if (model_idx == 1) {
-    row = task_idx + 3;
-  } else if (model_idx == 2) {
-    row = task_idx + 6;
-  }
-  
-  for (int i=0; i <= row; i++) {
-    if (i == row) {
-      for (int j=0; j < COL; j++) {
-        task_data.set(j, Data_Index_Table[i][j]);
-      }
-    }
-  }
-
-  return task_data;
-}
-
-//write to nonvolatile data structure (matrix) and allow access to data of 
-//matrix based on model_idx (i.e. set model_idx to index of NEXT task)
-void Task::Ch_write(int model_idx, int task_idx, float Data_Index_Table[][100]) {
-  //do something with model_idx 
-  
-  //write data to nonvolatile memory after some task completes
-  //NOTE: this is extra work and supposed to represent actually having 
-  //FRAM to write data to.
-
-  // Data_nonvol task_data;
-
-  // for (int i=0; i <= model_idx; i++) {
-    // if (i == model_idx) {
-      // for (int j=0; j < COL; j++) {
-        // task_data.set(j, Din.matrix[i][j]);
-      // }
-    // }
-  // }
-  
 }
 */
