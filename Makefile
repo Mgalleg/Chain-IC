@@ -5,11 +5,14 @@ CXX = g++
 #LIBINCLUDES = -L $(HOME)/lib
 #INC = $(INCLUDES) #$(LIBINCLUDES)
 
-CXXFLAGS = -g -Wall -std=c++11
+CXXFLAGS = -g -Wall -std=c++14
 SRCS = Main.cpp chainSIM.cpp src_new/chain.cpp
 OBJS = $(subst .cpp,.o,$(SRCS))
 
 all: Main
+
+test-cpp:
+	python3 project_test.py test-cpp
 
 Main: $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o Main
