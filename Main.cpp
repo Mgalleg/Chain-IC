@@ -1,5 +1,5 @@
-#include "src_new/chain.h"
-#include "src_new/timer.h"
+#include "src/chain.h"
+#include "src/timer.h"
 
 using namespace std;
 
@@ -7,7 +7,6 @@ void power_on(Task &t, int model, int task);
 void power_off(Task &t, int model, int task);
 
 int main(int argc, char *argv[]) {
-
 
   //MAIN CODE SECTION: keep for final
   Task t0(0,1);  //start with arbitrary orig_model and orig_task for now...
@@ -34,105 +33,103 @@ int main(int argc, char *argv[]) {
 
   Chsync(2);
 
-	// code to test timer
+  // code to test timer
+  
+  Task start(0,1);
+  int model = start.get_origin_model();
+  int task = start.get_origin_task();
 
-	cout << "starting timer test" << endl;
+  // sample interval
+  //int c = 40;
+  //int num_intervals = 3;
+  //int i = 0, x = 0;
 
-	Task t(0,1);
-	int model = t.get_origin_model();
-	int task = t.get_origin_task();
+  //std::vector<int> intervalOn;
+  //std::vector<int> intervalOff;
 
-	// sample interval
-	int c = 40;
-	int num_intervals = 3;
-	int i = 1, x = 1;
+  //intervalOn.push_back(25);
+  //intervalOn.push_back(25);
+  //intervalOn.push_back(25);
 
-	std::vector<int> intervalOn;
-	std::vector<int> intervalOff;
+  //intervalOn.push_back(75);
+  //intervalOn.push_back(75);
+  //intervalOn.push_back(75);
 
-	intervalOn.push_back(25);
-	intervalOn.push_back(25);
-	intervalOn.push_back(25);
+  cout << "starting timer test" << endl;
 
-	intervalOn.push_back(75);
-	intervalOn.push_back(75);
-	intervalOn.push_back(75);
+  //i++;
+  //x++;
 
-	Timer time = Timer();
-	
-	while(i < num_intervals) {
-		time.setInterval([&] () {
-			power_on(t, model, task);
-		}, intervalOn[x]*c);
+  Timer t = Timer();
 
-		i++;
-		x++;
-		/*
-		time.setInterval([&] () {
+  t.setInterval([&]() {
+    power_on(start, model, task);
+  }, 200);
 
-			power_off(t, model, task);
+  t.setTimeout([&]() {
+    cout << "5.2 seconds have passed" << endl;
+    t.stop(); 
+  }, 1000);
 
-		}, intervalOff[x]*c);
-		*/
-	}
-
-
+	//i++;
+  
+  while(true);
 
   return 0;
 }
 
 void power_on(Task &t, int model, int task) {
-	t(model, task);
-	model = t.get_origin_model();
-	task = t.get_origin_task();
+  t(model, task);
+  model = t.get_origin_model();
+  task = t.get_origin_task();
 }
 
 void power_off(Task &t, int model, int task) {
-	cout << "." << endl;
+  cout << "." << endl;
 }
 
 /*
 
   //cout<< Data_Index_Table[0][0].read(0);
 
-	// sample code with timer
-	// missing: waveform data to determine intervalOn, intervalOff, and num_intervals
-	Task t0(0,1);
-	int orig_model = t0.get_origin_model();
-	int orig_task = t0.get_orig_task();
-	int c = 35; // to be determined 
-	int num_intervals = 0; // to be determined 
-	int i = 1, x = 1; 
-	std::vector<int> intervalOn; // to be determined 
-	std::vector<int> intervalOff; // to be determined 
+  // sample code with timer
+  // missing: waveform data to determine intervalOn, intervalOff, and num_intervals
+  Task t0(0,1);
+  int orig_model = t0.get_origin_model();
+  int orig_task = t0.get_orig_task();
+  int c = 35; // to be determined 
+  int num_intervals = 0; // to be determined 
+  int i = 1, x = 1; 
+  std::vector<int> intervalOn; // to be determined 
+  std::vector<int> intervalOff; // to be determined 
 
-	Timer t = Timer();
+  Timer t = Timer();
 
-	while(i < num_intervals) {
-		t.setInterval([&] () {
-			power_on(t0, orig_model, orig_task);
-		}, intervalOn[x]*c;
+  while(i < num_intervals) {
+    t.setInterval([&] () {
+      power_on(t0, orig_model, orig_task);
+    }, intervalOn[x]*c;
 
-		t.setInterval([&] () {
-			i++;
-			x++;
-			
-			power_off(t0, orig_model, orig_task);
+    t.setInterval([&] () {
+      i++;
+      x++;
+      
+      power_off(t0, orig_model, orig_task);
 
-		}, intervalOff[x]*c);
-	}
+    }, intervalOff[x]*c);
+  }
 
-	return 0;
+  return 0;
 } 
 
 void power_on(Task &t, int orig_model, int orig_task) {
-	t(orig_model, orig_task);
-	orig_model = t.get_origin_model();
-	orig_task = t.get_origin_task();
+  t(orig_model, orig_task);
+  orig_model = t.get_origin_model();
+  orig_task = t.get_origin_task();
 }
 
 void power_off(Task &t, orig_model, orig_task) {
-	// code to print out non-vol data
+  // code to print out non-vol data
 }
 
 */
