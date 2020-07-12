@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
 		i++;
 		x++;
 
-		t.setInterval([&] () {
+		time.setInterval([&] () {
 
 			power_off(t, model, task);
 

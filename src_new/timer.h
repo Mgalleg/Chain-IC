@@ -6,8 +6,8 @@ class Timer {
 	bool clear = false;
 
 	public:
-		void setTimeout (auto function, int delay);
-		//void setInterval(auto function, int interval);
+		//void setTimeout (auto function, int delay);
+		void setInterval(auto function, int interval);
 		//void stop();
 }; 
 
@@ -30,7 +30,7 @@ void Timer::setInterval(auto function, int interval) {
 			if(this->clear) return;
 			std::this_thread::sleep_for(std::chrono::milliseconds(interval));
 			if(this->clear) return;
-			function;
+			function();
 		}
 	});
 	t.detach();
