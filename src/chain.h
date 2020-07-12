@@ -7,6 +7,7 @@
 #include <fstream>
 #include <unistd.h>
 #include <tuple>
+#include <stdarg.h>
 
 #define ROW 9   //total number of tasks + 1 
 #define COL 10  //total number of data members that we will record (per vector)
@@ -87,8 +88,14 @@ class Task{
 		void wait(int duration);
 };
 
+//wait function
 void wait(int duration);
 
+//read one time of the data set
 void data_read(int x_row);
 
+//read the most recent many times of datas
 void Chsync(int most_recent_many);
+
+//sync the require position data to the same value
+void MultiOut(double count, ...);

@@ -31,8 +31,6 @@ int main(int argc, char *argv[]) {
     cnt++;
   }
 
-  Chsync(2);
-
   // code to test timer
   
   Task agr(0,1);
