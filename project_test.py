@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
     suite = unittest.TestSuite()
 
-    if len(sys.argv) == 2 and sys.argv[1] == "test-cpp":
+    if len(sys.argv) == 2 and sys.argv[1] == "test-chain":
         suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(ProjectCppTest))
 
     result = unittest.TextTestRunner().run(suite)

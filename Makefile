@@ -7,8 +7,8 @@ OBJS = $(subst .cpp,.o,$(SRCS))
 
 all: Main
 
-test-cpp:
-	python3 project_test.py test-cpp
+test-chain:
+	python3 project_test.py test-chain
 
 Main: $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o Main
@@ -16,7 +16,7 @@ Main: $(OBJS)
 Main.o: Main.cpp src/chain.h src/timer.h
 	$(CXX) $(CXXFLAGS) -c Main.cpp
 
-chain.o: src/chain.cpp src/chain src/timer.h 
+chain.o: src/chain.cpp src/chain src/timer.h
 	$(CXX) $(CXXFLAGS) -c src/chain.cpp
 
 clean:
