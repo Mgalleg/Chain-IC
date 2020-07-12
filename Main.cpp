@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
     cnt++;
   }
 
-  MultiOut(2);
+  Chsync(2);
   return 0;
 }
 

@@ -91,7 +91,7 @@ void wait(int duration);
 
 void data_read(int x_row);
 
-void MultiOut(int most_recent_many);
+void Chsync(int most_recent_many);
 
 
 // previously used code that is currently not being used

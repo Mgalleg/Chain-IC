@@ -260,8 +260,8 @@ void data_read(int x_row){
 }
 
 //this function is to print out the most recent many group of data storage inside the non-volatile memory
-//for call this function will be MultiOut(2);2 will represent the most recent 2 groups of data want to read out.
-void MultiOut(int most_recent_many){
+//for call this function will be Chsync(2);2 will represent the most recent 2 groups of data want to read out.
+void Chsync(int most_recent_many){
   int data_row = mtx_indx_cnt;
   int count = 0;
   while(count < most_recent_many){
@@ -274,6 +274,18 @@ void MultiOut(int most_recent_many){
   }
 }
 
+/*
+//MultiOut is to change data to the sychronize channel all during the same time, it can choose from the most recent channels and rewrite them during the same time
+//order for call this function: MultiOut(count, model1, )
+void MultiOut(int count, ...){
+  va_list varList;
+  va_start (varList, count);
+
+  for(int i = 0; i < count/2; i++){
+    
+  }
+}
+*/
 
 
 // previously used code that is currently not being used
