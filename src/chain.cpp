@@ -101,7 +101,7 @@ void Task::set_origin(int model_idx, int task_idx){
 // Operator() function of Task class. Determines function (Task) to execute 
 // based on task index provided.
 void Task::operator()(int model_idx, int task_idx) {
-  cout<<"++current row index: "<<mtx_indx_cnt<<endl;
+  //cout<<"++current row index: "<<mtx_indx_cnt<<endl;
   //choose next task based on model and task types
   if (task_idx == 0) {
       //execute sensor_RAW() task for model type
