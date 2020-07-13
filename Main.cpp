@@ -1,8 +1,6 @@
 #include "src/chain.h"
 #include "src/timer.h"
 
-#define SHELLSCRIPT "^C"
-
 using namespace std;
 
 void start_timer(Task &agr, Timer &t, int model, int task, int duration);
@@ -35,16 +33,18 @@ int main(int argc, char *argv[]) {
 
   // code to test timer
   
+	// Creating an object of type Task. Starting from the first temperature task
   Task agr(0,1);
+
   int model = agr.get_origin_model();
   int task = agr.get_origin_task();
 
   cout << "starting timer test" << endl;
 
+	// An object of type Timer is declared
   Timer t = Timer();
 	
-	// Reading from waveform.txt
-
+	// Reading from waveform.txt. The Interval in which a device is on and off is stored in a vector
 	ifstream file;
 
 	file.open("waveform_data.txt");
@@ -69,6 +69,7 @@ int main(int argc, char *argv[]) {
 
 	int duration = data[2];
 
+	// The timer starts and the tasks begin executing and information begins printing on the console. The duration that the tasks execute is based on the interval for on from the waveform 
 	start_timer(agr, t, model, task, duration);
 	
 	int delay = ( (duration*1000) / 1000 ) + 1;
