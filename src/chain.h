@@ -59,6 +59,8 @@ class Task{
     Task(int model_idx, int task_idx);
     ~Task();
 
+    std::string data_str = "";
+
     //model_index used to determine model type: index=0 (temperature), index=1 (water), 
     //index=2 (humidity)
     int model_index;
@@ -87,6 +89,9 @@ class Task{
 
 		//wait function for recharging and printing 
 		void wait(int duration);
+
+    //write to output file "results.txt"
+    void wr2file(std::string words);
 };
 
 //wait function

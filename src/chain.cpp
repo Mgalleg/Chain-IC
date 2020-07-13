@@ -90,12 +90,24 @@ int Task::get_origin_task(){
   return origin_task;
 }
 
+void Task::wr2file(string words) {
+  ofstream results;
+  results.open("results.txt");
+  
+  data_str = data_str + words;
+  results << data_str;
+}
+
+
 // Set_origin function of Task class. Sets the origin variable (i.e. the index of task 
 // that will be the first task executed upon resuming after power failure).
 void Task::set_origin(int model_idx, int task_idx){
   origin_model = model_idx;
   origin_task = task_idx;
-  cout << "New Origin Task Set!" << endl;
+  // cout << "New Origin Task Set!" << endl;
+  wr2file("New origin model is: " + to_string(origin_model) + '\n');
+  wr2file("New origin task is: " + to_string(origin_task) + '\n');
+  wr2file("New Origin Task Set!\n");
 }
 
 // Operator() function of Task class. Determines function (Task) to execute 
@@ -118,7 +130,8 @@ void Task::operator()(int model_idx, int task_idx) {
 void Task::sensor_RAW(int model_type) {
 
 #ifdef DEBUG
-  cout << "Executing Sensor RAW Task for ";
+  // cout << "Executing Sensor RAW Task for ";
+  wr2file("Executing Sensor RAW Task for ");
 #endif
 
   float A,B;
@@ -130,35 +143,48 @@ void Task::sensor_RAW(int model_type) {
     float data = A + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(B-A)));
     if (model_type == 0) {
       //sensor_RAW() function for temperature model
-      cout << "Temperature Model" << endl;
+      // cout << "Temperature Model" << endl;
+      if (i==0) {
+        wr2file("Temperature Model\n");
+      }
       Data_Index_Table[0][mtx_indx_cnt].set(i,data);
     } else if (model_type == 1) {
       //sensor_RAW() function for water model
-      cout << "Water Model" << endl;
+      // cout << "Water Model" << endl;
+      if (i==0) {
+        wr2file("Water Model\n");
+      }
       Data_Index_Table[3][mtx_indx_cnt].set(i,data);
     } else if (model_type == 2) {
       //sensor_RAW() function for humidity model
-      cout << "Humidity Model" << endl;
+      // cout << "Humidity Model" << endl;
+      if (i==0) {
+        wr2file("Humidity Model\n");
+      }
       Data_Index_Table[6][mtx_indx_cnt].set(i,data);
     }
   }
 
   if (model_type == 0) {
     //set next origin task to sensor_AVG() for temperature model
-    cout << "Setting Origin Task to sensor_AVG() for Temperature Model" << endl;
+    // cout << "Setting Origin Task to sensor_AVG() for Temperature Model" << endl;
+    wr2file("Setting Origin Task to sensor_AVG() for Temperature Model\n");
     this->set_origin(model_type, 1);
   } else if (model_type == 1) {
     //set next origin task to sensor_AVG() for water model
-    cout << "Setting Origin Task to sensor_AVG() for Water Model" << endl;
+    // cout << "Setting Origin Task to sensor_AVG() for Water Model" << endl;
+    wr2file("Setting Origin Task to sensor_AVG() for Water Model\n");
     this->set_origin(model_type, 1);
   } else if (model_type == 2) {
     //set next origin task to sensor_AVG() for humidity model
-    cout << "Setting Origin Task to sensor_AVG() for Humidity Model" << endl;
+    // cout << "Setting Origin Task to sensor_AVG() for Humidity Model" << endl;
+    wr2file("Setting Origin Task to sensor_AVG() for Humidity Model\n");
     this->set_origin(model_type, 1);
   }
 
 #ifdef DEBUG
-  cout << "---------------------------------------"<<endl;
+  // cout << "---------------------------------------"<<endl;
+  wr2file("---------------------------------------\n");
 #endif
 
 }
@@ -166,7 +192,8 @@ void Task::sensor_RAW(int model_type) {
 void Task::sensor_AVG(int model_type) {
 
 #ifdef DEBUG
-  cout << "Executing Sensor AVG Task for ";
+  // cout << "Executing Sensor AVG Task for ";
+  wr2file("Executing Sensor AVG Task for ");
 #endif
 
   int table_index;
@@ -181,27 +208,35 @@ void Task::sensor_AVG(int model_type) {
 
   if (model_type == 0) {
     //sensor_AVG() function for temperature model
-    cout << "Temperature Model" << endl;
+    // cout << "Temperature Model" << endl;
+    wr2file("Temperature Model\n");
     Data_Index_Table[1][mtx_indx_cnt].set(0,avg);
-    cout << "Setting Origin Task to sensor_IO() for Temperature Model" << endl;
+    // cout << "Setting Origin Task to sensor_IO() for Temperature Model" << endl;
+    wr2file("Setting Origin Task to sensor_IO() for Temperature Model\n");
     this->set_origin(model_type, 2);
   } else if (model_type == 1) {
     //sensor_AVG() function for water model
-    cout << "Water Model" << endl;
+    // cout << "Water Model" << endl;
+    wr2file("Water Model\n");
     Data_Index_Table[4][mtx_indx_cnt].set(0,avg);
-    cout << "Setting Origin Task to sensor_IO() for Water Model" << endl;
+    // cout << "Setting Origin Task to sensor_IO() for Water Model" << endl;
+    wr2file("Setting Origin Task to sensor_IO() for Water Model\n");
     this->set_origin(model_type, 2);
   } else if (model_type == 2) {
     //sensor_AVG() function for humidity model
-    cout << "Humidity Model" << endl;
+    // cout << "Humidity Model" << endl;
+    wr2file("Humidity Model\n");
     Data_Index_Table[7][mtx_indx_cnt].set(0,avg);
-    cout << "Setting Origin Task to sensor_IO() for Humidity Model" << endl;
+    // cout << "Setting Origin Task to sensor_IO() for Humidity Model" << endl;
+    wr2file("Setting Origin Task to sensor_IO() for Humidity Model\n");
     this->set_origin(model_type, 2);
   }
 
 #ifdef DEBUG
-  cout<< "Raw data is: " << A << " | " << B << " | " << C << endl;
-  cout << "---------------------------------------"<<endl;
+  // cout<< "Raw data is: " << A << " | " << B << " | " << C << endl;
+  wr2file("Raw data is: " + to_string(A) + " | " + to_string(B) + " | " + to_string(C) + '\n');
+  // cout << "---------------------------------------"<<endl;
+  wr2file("---------------------------------------\n");
 #endif
 
 }
@@ -209,7 +244,8 @@ void Task::sensor_AVG(int model_type) {
 void Task::sensor_IO(int model_type){
 
 #ifdef DEBUG
-  cout << "Executing Sensor IO Task for ";
+  // cout << "Executing Sensor IO Task for ";
+  wr2file("Executing Sensor IO Task for ");
 #endif
 
   //store 0 = temperature OK, 1 = too high, 2 = too low. 
@@ -219,49 +255,58 @@ void Task::sensor_IO(int model_type){
   float low_range;
   int index;
   if (model_type == 0) {
-    cout << "Temperature Model" << endl;
     //sensor_IO() function for temperature model
+    // cout << "Temperature Model" << endl;
+    wr2file("Temperature Model\n");
     avg = Data_Index_Table[1][mtx_indx_cnt].read(0);
     high_range = TEMP_HIGH;
     low_range = TEMP_HIGH;
     index = 2;
   }else if(model_type == 1){
-    cout << "Water Model" << endl;
     //sensor_IO() function for water model
+    // cout << "Water Model" << endl;
+    wr2file("Water Model\n");
     avg = Data_Index_Table[4][mtx_indx_cnt].read(0);
     high_range = WATER_HIGH;
     low_range = WATER_LOW;
     index = 5;
   }else{
-    cout << "Humidity Model" << endl;
     //sensor_IO() function for humidity model
+    // cout << "Humidity Model" << endl;
+    wr2file("Humidity Model\n");
     avg = Data_Index_Table[7][mtx_indx_cnt].read(0);
     high_range = HUMID_HIGH;
     low_range = HUMID_LOW;
     index = 8;
   }
 
-  cout << "Average data read from non-volatile memory is: " << avg << endl;
+  // cout << "Average data read from non-volatile memory is: " << avg << endl;
+  wr2file("Average data read from non-volatile memory is: " + to_string(avg) + '\n');
   
   //comparison function
   if (avg > high_range){
-    cout<<"**data too high**"<<endl;
+    // cout<<"**data too high**"<<endl;
+    wr2file("**data too high**\n");
     Data_Index_Table[index][mtx_indx_cnt].set(0,1);
   }else if(avg < low_range){
-    cout<<"**data too low**"<<endl;
+    // cout<<"**data too low**"<<endl;
+    wr2file("**data too low**\n");
     Data_Index_Table[index][mtx_indx_cnt].set(0,2);
   }else{
-    cout<<"**data good**"<<endl;
+    // cout<<"**data good**"<<endl;
+    wr2file("**data good**\n");
     Data_Index_Table[index][mtx_indx_cnt].set(0,0);
   }
 
   if (model_type == 0) {
     //set next origin task to sensor_RAW() for water model
-    cout << "Setting Origin Task to sensor_RAW() for Water Model" << endl;
+    // cout << "Setting Origin Task to sensor_RAW() for Water Model" << endl;
+    wr2file("Setting Origin Task to sensor_RAW() for Water Model\n");
     this->set_origin(1, 0);
   } else if (model_type == 1) {
     //set next origin task to sensor_RAW() for humidity model
-    cout << "Setting Origin Task to sensor_RAW() for Humidity Model" << endl;
+    // cout << "Setting Origin Task to sensor_RAW() for Humidity Model" << endl;
+    wr2file("Setting Origin Task to sensor_RAW() for Humidity Model\n");
     this->set_origin(2, 0);
   } else if (model_type == 2) {
     if (mtx_indx_cnt == 9){
@@ -270,12 +315,14 @@ void Task::sensor_IO(int model_type){
       mtx_indx_cnt++;
     }
     //set next origin task to sensor_RAW() for temperature model
-    cout << "Setting Origin Task to sensor_RAW() for Temperature Model" << endl;
+    // cout << "Setting Origin Task to sensor_RAW() for Temperature Model" << endl;
+    wr2file("Setting Origin Task to sensor_RAW() for Temperature Model\n");
     this->set_origin(0, 0);
   }
 
 #ifdef DEBUG
-  cout << "---------------------------------------"<<endl;
+  // cout << "---------------------------------------"<<endl;
+  wr2file("---------------------------------------\n");
 #endif
 
 }

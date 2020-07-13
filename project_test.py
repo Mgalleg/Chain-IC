@@ -1,9 +1,9 @@
 import os
 import sys
+import csv
 import random
 import unittest
 import subprocess
-
 import numpy as np
 from scipy import signal
 import matplotlib.pyplot as plt
@@ -26,6 +26,7 @@ class ProjectCppTest(unittest.TestCase):
 
         # open output files
         outfile = open('waveform_data.txt', 'w')
+        outfile2 = open('waveform_data_raw.txt', 'w')
 
         # generate random parameters for voltage waveform with "charge-time" range from 70 to 95
         # (i.e. "on-time" ranges from 5 to 30 ticks); number of cycles ranges from 3 to 10
@@ -72,24 +73,57 @@ class ProjectCppTest(unittest.TestCase):
 
         # print array of waveform raw data to output file
         print(triangle, file=outfile)
+        print(triangle, file=outfile2)
 
         # close output files
         outfile.close()
 
-        return
+        return t, triangle
 
     def test_chain_cpp(self):
 
         print("Testing Chain-based application\n")
 
         #generate random voltage waveform
-        self.gen_waveform()
+        t, triangle = self.gen_waveform()
 
         #call Main executable with argument (waveform file)
         subprocess.check_call(["./Main", "waveform_data.txt"])
 
-        #add gui or display options here...
 
+        # #plot waveforms
+        # plt.plot(t, triangle)
+        # plt.title('waveform')
+        #
+        # plt.grid(True, which='both')
+        # plt.axhline(y=0, color='k')
+        # plt.ylim(-1,1)
+        # # plt.show()
+        #
+        #
+        # #plot data and compare
+        # x = []
+        # y = []
+        # csv_file = open('waveform_data_raw.txt', "r")
+        #
+        # data_list = [line.strip() for line in csv_file]  # separate lines within input text file
+        #
+        # # with open('waveform_data_raw.txt', 'r') as rawdata:
+        # # line = csv.reader(rawdata, delimiter=' ')
+        # for data in data_list:
+        #     print(data)
+        #     d = data.split(' ')
+        #     print(d)
+        #     break
+        #     # str = d[0]
+        #     # if str[0] != "[":
+        #     #     # time_list.append(word[0])
+        #     #     # results_list.append(word[1])
+        #     #     x.append(float(d))
+        #     #     # y.append(float(char[1]))
+        #     #
+        #     # print(x)
+        #     # print(y)
 
 
         # #use test to determine outcome
