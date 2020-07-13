@@ -3,7 +3,8 @@
 
 using namespace std;
 
-void start_timer(Task &agr, Timer &t, int model, int task, int duration);
+void power_on(Task &agr, Timer &on, int model, int task, int duration_on);
+void power_off(Timer &off, int duration_off);
 
 int main(int argc, char *argv[]) {
 
@@ -41,9 +42,10 @@ int main(int argc, char *argv[]) {
 
   cout << "starting timer test" << endl;
 
-	// An object of type Timer is declared
-  Timer t = Timer();
-	
+	// Two objects of type Timer are declared
+  Timer on = Timer();
+	Timer off = Timer();
+
 	// Reading from waveform.txt. The Interval in which a device is on and off is stored in a vector
 	ifstream file;
 
@@ -67,12 +69,14 @@ int main(int argc, char *argv[]) {
 		count++;
 	}
 
-	int duration = data[2];
+	int duration_on = (data[0] / data[2]) - data[1];
+	int duration_off = data[1];
 
 	// The timer starts and the tasks begin executing and information begins printing on the console. The duration that the tasks execute is based on the interval for on from the waveform 
-	start_timer(agr, t, model, task, duration);
-	
-	int delay = ( (duration*1000) / 1000 ) + 1;
+	power_on(agr, on, model, task, duration_on);
+	power_off(off, duration_off);
+
+	int delay = duration_on + duration_off + 1;
 
 	this_thread::sleep_for (chrono::seconds(delay));
 
@@ -81,15 +85,26 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-void start_timer(Task &agr, Timer &t, int model, int task, int duration) {
-	t.setInterval([&]() {
+void power_on(Task &agr, Timer &on, int model, int task, int duration_on) {
+	on.setInterval([&]() {
 		model = agr.get_origin_model();
  		task = agr.get_origin_task();
 		agr(model, task);
-  }, 200);
+  }, 200); // 200 was arbitrarily chosen and depends on the technology
 
-  t.setTimeout([&]() {
-    cout << "POWER FAILURE" << endl; 
-		t.stop();
-  }, duration*1000);
+  on.setTimeout([&]() {
+		cout << "POWER FAILURE" << endl;
+    on.stop();
+  }, duration_on*1000);
+}
+
+void power_off(Timer &off, int duration_off) { 
+	off.setInterval([&]() {
+		cout << "recharging" << endl;
+  }, 200); // 200 was arbitrarily chosen and depends on the environment
+
+  off.setTimeout([&]() {
+    cout << "POWER ON" << endl; 
+		off.stop();
+  }, duration_off*1000);
 }
