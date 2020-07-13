@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 	int duration_on = (data[0] / data[2]) - data[1];
 	int duration_off = data[1];
 	int intervals = data[2];
-	int delay = ( (duration_on + duration_off) / 10 ) + 2;
+	int delay = ( duration_on + duration_off ) + 1;
 
 	// The timer starts and the tasks begin executing and information begins printing on the console. The duration that the tasks execute is based on the interval for on from the waveform 
 
@@ -92,24 +92,24 @@ void power_on(Task &agr, Timer &on, int model, int task, int duration_on, int du
 		model = agr.get_origin_model();
  		task = agr.get_origin_task();
 		agr(model, task);
-  }, 200); // 200 was arbitrarily chosen and depends on the technology
+  }, 2000); // 200 was arbitrarily chosen and depends on the technology
 
   on.setTimeout([&]() {
 		cout << "POWER FAILURE" << endl;
 		on.stop();
     Timer off = Timer();
-		power_off(off, duration_off);
 		int delay = duration_off + 1;
+		power_off(off, duration_off);
 		this_thread::sleep_for (chrono::seconds(delay));
-  }, duration_on*100);
+  }, duration_on*1000);
 }
 
 void power_off(Timer &off, int duration_off) { 
 	off.setInterval([&]() {
 		cout << "recharging" << endl;
-  }, 500); // 500 was arbitrarily chosen and depends on the environment
+  }, 2000); // 5000 was arbitrarily chosen and depends on the environment
 
   off.setTimeout([&]() {
 		off.stop();
-  }, duration_off*100);
+  }, duration_off*1000);
 }
