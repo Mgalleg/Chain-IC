@@ -21,4 +21,5 @@ chain.o: src/chain.cpp src/chain src/timer.h
 
 clean:
 	rm -rf *.o Main
+	rm -rf waveform_data.txt
 	rm -rf src/chain.o

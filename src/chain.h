@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <tuple>
 #include <stdarg.h>
+#include <string>
 
 #define ROW 9   //total number of tasks + 1 
 #define COL 10  //total number of data members that we will record (per vector)

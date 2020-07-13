@@ -1,13 +1,15 @@
 #include "src/chain.h"
 #include "src/timer.h"
 
+#define SHELLSCRIPT "^C"
+
 using namespace std;
 
-void power_on(Task &t, int model, int task);
-void power_off(Task &t, int model, int task);
+void start_timer(Task &agr, Timer &t, int model, int task, int duration);
 
 int main(int argc, char *argv[]) {
 
+	/*
   //MAIN CODE SECTION: keep for final
   Task t0(0,1);  //start with arbitrary orig_model and orig_task for now...
 
@@ -29,7 +31,7 @@ int main(int argc, char *argv[]) {
     //use Task operator to execute next task based on index ("orig")
     t0(orig_model, orig_task);
     cnt++;
-  }
+  }*/
 
   // code to test timer
   
@@ -40,18 +42,53 @@ int main(int argc, char *argv[]) {
   cout << "starting timer test" << endl;
 
   Timer t = Timer();
+	
+	// Reading from waveform.txt
 
-  t.setInterval([&]() {
+	ifstream file;
+
+	file.open("waveform_data.txt");
+
+	vector<int> data;
+
+	string word;
+
+	int count = 0;
+
+	while(count < 3) {
+		file >> word;
+		string num = "";
+		for(auto &c : word) {
+			if(c != '[' && c != ']' && c != ',') {
+				num += c;
+			}
+		}
+		data.push_back(stoi(num));
+		count++;
+	}
+
+	int duration = data[2];
+
+	start_timer(agr, t, model, task, duration);
+	
+	int delay = ( (duration*1000) / 1000 ) + 1;
+
+	this_thread::sleep_for (chrono::seconds(delay));
+
+	file.close();
+
+  return 0;
+}
+
+void start_timer(Task &agr, Timer &t, int model, int task, int duration) {
+	t.setInterval([&]() {
 		model = agr.get_origin_model();
  		task = agr.get_origin_task();
 		agr(model, task);
   }, 200);
 
   t.setTimeout([&]() {
-    t.stop(); 
-  }, 20000);
-  
-  while(true);
-
-  return 0;
+    cout << "POWER FAILURE" << endl; 
+		t.stop();
+  }, duration*1000);
 }
