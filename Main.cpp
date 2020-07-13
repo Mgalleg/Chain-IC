@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void power_on(Task &agr, Timer &on, int model, int task, int duration_on);
+void power_on(Task &agr, Timer &on, int model, int task, int duration_on, int duration_off);
 void power_off(Timer &off, int duration_off);
 
 int main(int argc, char *argv[]) {
@@ -42,10 +42,6 @@ int main(int argc, char *argv[]) {
 
   cout << "starting timer test" << endl;
 
-	// Two objects of type Timer are declared
-  Timer on = Timer();
-	Timer off = Timer();
-
 	// Reading from waveform.txt. The Interval in which a device is on and off is stored in a vector
 	ifstream file;
 
@@ -71,12 +67,18 @@ int main(int argc, char *argv[]) {
 
 	int duration_on = (data[0] / data[2]) - data[1];
 	int duration_off = data[1];
+	int intervals = data[2];
+	int delay = ( (duration_on + duration_off) / 10 ) + 2;
 
 	// The timer starts and the tasks begin executing and information begins printing on the console. The duration that the tasks execute is based on the interval for on from the waveform 
-	power_on(agr, on, model, task, duration_on);
-	power_off(off, duration_off);
 
-	int delay = duration_on + duration_off + 1;
+	// An object of type Timer is declared
+
+	// may need to use a while loop here to execute this process n times, where n is data[2]
+
+  Timer on = Timer();
+
+	power_on(agr, on, model, task, duration_on, duration_off);
 
 	this_thread::sleep_for (chrono::seconds(delay));
 
@@ -85,7 +87,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-void power_on(Task &agr, Timer &on, int model, int task, int duration_on) {
+void power_on(Task &agr, Timer &on, int model, int task, int duration_on, int duration_off) {
 	on.setInterval([&]() {
 		model = agr.get_origin_model();
  		task = agr.get_origin_task();
@@ -94,17 +96,20 @@ void power_on(Task &agr, Timer &on, int model, int task, int duration_on) {
 
   on.setTimeout([&]() {
 		cout << "POWER FAILURE" << endl;
-    on.stop();
-  }, duration_on*1000);
+		on.stop();
+    Timer off = Timer();
+		power_off(off, duration_off);
+		int delay = duration_off + 1;
+		this_thread::sleep_for (chrono::seconds(delay));
+  }, duration_on*100);
 }
 
 void power_off(Timer &off, int duration_off) { 
 	off.setInterval([&]() {
 		cout << "recharging" << endl;
-  }, 200); // 200 was arbitrarily chosen and depends on the environment
+  }, 500); // 500 was arbitrarily chosen and depends on the environment
 
   off.setTimeout([&]() {
-    cout << "POWER ON" << endl; 
 		off.stop();
-  }, duration_off*1000);
+  }, duration_off*100);
 }
