@@ -87,15 +87,9 @@ class Task{
     void sensor_AVG(int model_type); //task 2
     void sensor_IO(int model_type);   //taks 3
 
-		//wait function for recharging and printing 
-		void wait(int duration);
-
     //write to output file "results.txt"
     void wr2file(std::string words);
 };
-
-//wait function
-void wait(int duration);
 
 //read one time of the data set
 void data_read(int x_row);

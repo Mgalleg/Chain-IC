@@ -2,10 +2,10 @@
 
 using namespace std;
 
-int origin_set;
-int origin_model;
-int origin_task;
-int mtx_indx_cnt; //column counter used for power reboots 
+int task_cnt = 0;   //task count
+int origin_model;   //origin model index
+int origin_task;    //origin tasks index 
+int mtx_indx_cnt;   //column counter used for power reboots 
 
 Data_nonvol Data_Index_Table[ROW][COL]; //data matrix representing nonvolatile memory
 
@@ -130,7 +130,7 @@ void Task::operator()(int model_idx, int task_idx) {
 void Task::sensor_RAW(int model_type) {
 
 #ifdef DEBUG
-  // cout << "Executing Sensor RAW Task for ";
+  // cout << "Executing Sensor RAW Task for  ";
   wr2file("Executing Sensor RAW Task for ");
 #endif
 
@@ -181,6 +181,7 @@ void Task::sensor_RAW(int model_type) {
     wr2file("Setting Origin Task to sensor_AVG() for Humidity Model\n");
     this->set_origin(model_type, 1);
   }
+  task_cnt++;
 
 #ifdef DEBUG
   // cout << "---------------------------------------"<<endl;
@@ -231,6 +232,7 @@ void Task::sensor_AVG(int model_type) {
     wr2file("Setting Origin Task to sensor_IO() for Humidity Model\n");
     this->set_origin(model_type, 2);
   }
+  task_cnt++;
 
 #ifdef DEBUG
   // cout<< "Raw data is: " << A << " | " << B << " | " << C << endl;
@@ -319,21 +321,13 @@ void Task::sensor_IO(int model_type){
     wr2file("Setting Origin Task to sensor_RAW() for Temperature Model\n");
     this->set_origin(0, 0);
   }
+  task_cnt++;
 
 #ifdef DEBUG
   // cout << "---------------------------------------"<<endl;
   wr2file("---------------------------------------\n");
 #endif
 
-}
-
-//this function is calling for the wait set and print out the most resent data set on the current round;
-//call wait(3); wait 3 second and print out the most recent COL data inside Index table.
-void wait(int duration) {
-  // print non-volatile data and wait for recharge 
-  sleep(duration);
-  cout << "enter the wait function" << endl;
-  data_read(mtx_indx_cnt);
 }
 
 //this function to measure a paticular set of three model data in non-volatile memory

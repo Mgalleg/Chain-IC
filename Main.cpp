@@ -3,6 +3,8 @@
 
 using namespace std;
 
+int rst_cnt = 0;
+
 void power_on(Task &agr, Timer &on, int model, int task, int duration_on, int duration_off);
 void power_off(Timer &off, int duration_off);
 
@@ -35,7 +37,12 @@ int main(int argc, char *argv[]) {
   // code to test timer
   
 	// Creating an object of type Task. Starting from the first temperature task
-  Task agr(0,1);
+  Task agr(0,0);
+  
+  //initialize task and reset counts
+  // task_cnt = 0;
+  // rst_cnt = 0;
+
 
   int model = agr.get_origin_model();
   int task = agr.get_origin_task();
@@ -69,6 +76,8 @@ int main(int argc, char *argv[]) {
 	int duration_off = data[1];
 	int intervals = data[2];
 	int delay = ( duration_on + duration_off ) + 1;
+  
+  cout << duration_on << " " << duration_off << " " << intervals << " " << delay << endl;
 
 	// The timer starts and the tasks begin executing and information begins printing on the console. The duration that the tasks execute is based on the interval for on from the waveform 
 
@@ -76,11 +85,16 @@ int main(int argc, char *argv[]) {
 
 	// may need to use a while loop here to execute this process n times, where n is data[2]
 
-  Timer on = Timer();
 
-	power_on(agr, on, model, task, duration_on, duration_off);
-
-	this_thread::sleep_for (chrono::seconds(delay));
+  
+  while (rst_cnt < intervals) {
+    Timer on = Timer();
+    cout << "rst_cnt is: " << rst_cnt << endl;
+    power_on(agr, on, model, task, duration_on, duration_off);
+    this_thread::sleep_for (chrono::seconds(delay));
+    rst_cnt++;
+  }
+  // this_thread::sleep_for (chrono::seconds(delay));
 
 	file.close();
 
@@ -95,7 +109,7 @@ void power_on(Task &agr, Timer &on, int model, int task, int duration_on, int du
   }, 2000); // 200 was arbitrarily chosen and depends on the technology
 
   on.setTimeout([&]() {
-		cout << "POWER FAILURE" << endl;
+		cout << "\n***POWER FAILURE***\n" << endl;
 		on.stop();
     Timer off = Timer();
 		int delay = duration_off + 1;
@@ -106,7 +120,7 @@ void power_on(Task &agr, Timer &on, int model, int task, int duration_on, int du
 
 void power_off(Timer &off, int duration_off) { 
 	off.setInterval([&]() {
-		cout << "recharging" << endl;
+		cout << "Recharging..." << endl;
   }, 2000); // 5000 was arbitrarily chosen and depends on the environment
 
   off.setTimeout([&]() {
