@@ -4,9 +4,6 @@ Chain-based simulating environment and debugging tools for Intermittent devices.
 # Project Topic
 Chain-based simulating environment and debugging tools for Intermittent devices.
 
-# Project Code Link:
-https://github.com/YaxinDeng/Chain-Based
-
 # Team Members
 * Yaxin Deng | yaxinden@usc.edu | 4704-0648-15
 * Eric Escudero | eescuder@usc.edu | 6006-5413-51
