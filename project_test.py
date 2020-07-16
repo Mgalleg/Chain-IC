@@ -30,7 +30,7 @@ class ProjectCppTest(unittest.TestCase):
         # generate random parameters for voltage waveform with "charge-time" range from 70 to 95
         # (i.e. "on-time" ranges from 5 to 30 ticks); number of cycles ranges from 3 to 10
         charge_time = random.randint(70, 95)
-        cycles = random.randint(3, 7)
+        cycles = random.randint(3, 5)
         tot_t = cycles * 100
 
         #print parameters
@@ -162,10 +162,6 @@ class ProjectCppTest(unittest.TestCase):
         #     ax2.plot(t_lst[0], task_lst[0], t_lst[1], task_lst[1], t_lst[2], task_lst[2], t_lst[3], task_lst[3], marker='o', markerfacecolor='red', color=task_color)
         # if cycles == 5:
         #     ax2.plot(t_lst[0], task_lst[0], t_lst[1], task_lst[1], t_lst[2], task_lst[2], t_lst[3], task_lst[3], t_lst[4], task_lst[4], marker='o', markerfacecolor='red', color=task_color)
-        # if cycles == 6:
-        #     ax2.plot(t_lst[0], task_lst[0], t_lst[1], task_lst[1], t_lst[2], task_lst[2], t_lst[3], task_lst[3], t_lst[4], task_lst[4], t_lst[5], task_lst[5], marker='o', markerfacecolor='red', color=task_color)
-        # if cycles == 7:
-        #     ax2.plot(t_lst[0], task_lst[0], t_lst[1], task_lst[1], t_lst[2], task_lst[2], t_lst[3], task_lst[3], t_lst[4], task_lst[4], t_lst[5], task_lst[5], t_lst[6], task_lst[6], marker='o', markerfacecolor='red', color=task_color)
         #
         # ax2.tick_params(axis='y', labelcolor=task_color)
         # fig.tight_layout()  # otherwise the right y-label is slightly clipped

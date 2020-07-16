@@ -69,26 +69,29 @@ int main(int argc, char *argv[]) {
 
 	int duration_on = (data[0] / data[2]) - data[1];
 	int duration_off = data[1];
-	int intervals = data[2];
+	int cycles = data[2];
 	int delay = ( duration_on + duration_off ) + 1;
   
-  cout << duration_on << " " << duration_off << " " << intervals << " " << delay << endl;
+  cout << duration_on << " " << duration_off << " " << cycles << " " << delay << endl;
 
 	// The timer starts and the tasks begin executing and information begins printing on the console. The duration that the tasks execute is based on the interval for on from the waveform 
-
-	// An object of type Timer is declared
-
+  // An object of type Timer is declared
 	// may need to use a while loop here to execute this process n times, where n is data[2]
 
 
-  while (rst_cnt < intervals) {
+  while (rst_cnt < cycles) {
     Timer on = Timer();
     cout << "rst_cnt is: " << rst_cnt << endl;
     power_on(agr, on, model, task, duration_on, duration_off);
-    this_thread::sleep_for (chrono::seconds(delay));
+    this_thread::sleep_for (chrono::seconds(duration_on));
+
+    Timer off = Timer();
+		power_off(off, duration_off);
+		this_thread::sleep_for (chrono::seconds(duration_off));
+
     rst_cnt++;
   }
-  // this_thread::sleep_for (chrono::seconds(delay));
+  cout << "***END OF MAIN***" << endl;
 
 	file.close();
 
@@ -102,15 +105,11 @@ void power_on(Task &agr, Timer &on, int model, int task, int duration_on, int du
 		model = agr.get_origin_model();
  		task = agr.get_origin_task();
 		agr(model, task);
-  }, 2000); // 200 was arbitrarily chosen and depends on the technology
+  }, 1000); // 200 was arbitrarily chosen and depends on the technology
 
   on.setTimeout([&]() {
     cout << "Stopping ON thread" << endl;
 		on.stop();
-    Timer off = Timer();
-		int delay = duration_off + 1;
-		power_off(off, duration_off);
-		this_thread::sleep_for (chrono::seconds(delay));
   }, duration_on*1000);
 }
 
@@ -118,7 +117,7 @@ void power_off(Timer &off, int duration_off) {
   cout << "\n***POWER FAILURE***\n" << endl;
 	off.setInterval([&]() {
 		cout << "Recharging..." << endl;
-  }, 2000); // 5000 was arbitrarily chosen and depends on the environment
+  }, 1000); // 5000 was arbitrarily chosen and depends on the environment
 
   off.setTimeout([&]() {
     cout << "Stopping OFF thread" << endl;
