@@ -39,11 +39,6 @@ int main(int argc, char *argv[]) {
 	// Creating an object of type Task. Starting from the first temperature task
   Task agr(0,0);
   
-  //initialize task and reset counts
-  // task_cnt = 0;
-  // rst_cnt = 0;
-
-
   int model = agr.get_origin_model();
   int task = agr.get_origin_task();
 
@@ -86,7 +81,6 @@ int main(int argc, char *argv[]) {
 	// may need to use a while loop here to execute this process n times, where n is data[2]
 
 
-  
   while (rst_cnt < intervals) {
     Timer on = Timer();
     cout << "rst_cnt is: " << rst_cnt << endl;
@@ -102,14 +96,16 @@ int main(int argc, char *argv[]) {
 }
 
 void power_on(Task &agr, Timer &on, int model, int task, int duration_on, int duration_off) {
+  cout << "power_on function" << endl;
 	on.setInterval([&]() {
+    cout << "Running AGR Tasks..." << endl;
 		model = agr.get_origin_model();
  		task = agr.get_origin_task();
 		agr(model, task);
   }, 2000); // 200 was arbitrarily chosen and depends on the technology
 
   on.setTimeout([&]() {
-		cout << "\n***POWER FAILURE***\n" << endl;
+    cout << "Stopping ON thread" << endl;
 		on.stop();
     Timer off = Timer();
 		int delay = duration_off + 1;
@@ -118,12 +114,14 @@ void power_on(Task &agr, Timer &on, int model, int task, int duration_on, int du
   }, duration_on*1000);
 }
 
-void power_off(Timer &off, int duration_off) { 
+void power_off(Timer &off, int duration_off) {
+  cout << "\n***POWER FAILURE***\n" << endl;
 	off.setInterval([&]() {
 		cout << "Recharging..." << endl;
   }, 2000); // 5000 was arbitrarily chosen and depends on the environment
 
   off.setTimeout([&]() {
+    cout << "Stopping OFF thread" << endl;
 		off.stop();
   }, duration_off*1000);
 }
