@@ -1,9 +1,7 @@
 #include <iostream>
 #include <vector>
-#include <time.h>
 #include <random>
 #include <cstdlib>
-#include <ctime>
 #include <fstream>
 #include <unistd.h>
 #include <tuple>
